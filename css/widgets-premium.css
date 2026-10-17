@@ -1,0 +1,2152 @@
+/* ================================================================
+   NEXGEN TELECOM — WIDGETS PREMIUM
+   Liquid Glassmorphism + Fiber Optic Glow + Liquid Interactions
+   Compatibilidad: dark | light | transparent | neon
+   ================================================================ */
+
+/* ---------------------------------------------------------------
+   SECCIÓN 1: VARIABLES EXTENDIDAS DE TEMA
+   Paleta completa para los 4 modos — sin !important, cascada pura
+   --------------------------------------------------------------- */
+:root,
+html[data-theme="dark"],
+body.dark-theme {
+    /* Shining Button — Hue HSL del glow exterior */
+    --glow-hue: 270;          /* Violeta / Azul oscuro por defecto */
+    --shadow-hue: 270;
+    --spring-duration: 0.5s;
+    --spring-easing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    /* Fiber optic accent color */
+    --fiber-color: rgba(96, 165, 250, 0.7);
+    --fiber-glow: rgba(59, 130, 246, 0.4);
+
+    /* Social button accent */
+    --social-accent: rgba(255, 255, 255, 0.12);
+    --social-text: rgba(148, 163, 184, 1);
+    --social-text-hover: #ffffff;
+
+    /* Shining button palette */
+    --btn-bg-from: #1a1a2e;
+    --btn-bg-to: #0b1120;
+    --btn-text: #ffffff;
+
+    /* Theme switch socket */
+    --socket-bg: rgba(255, 255, 255, 0.12);
+    --socket-border: rgba(255, 255, 255, 0.16);
+    --socket-glow: rgba(96, 165, 250, 0.5);
+}
+
+html[data-theme="light"],
+body.light-theme {
+    --glow-hue: 220;
+    --shadow-hue: 220;
+    --fiber-color: rgba(37, 99, 235, 0.6);
+    --fiber-glow: rgba(37, 99, 235, 0.2);
+    --social-accent: rgba(15, 23, 42, 0.05);
+    --social-text: rgba(71, 85, 105, 1);
+    --social-text-hover: #0f172a;
+    --btn-bg-from: #f8fafc;
+    --btn-bg-to: #f1f5f9;
+    --btn-text: #0f172a;
+    --socket-bg: rgba(15, 23, 42, 0.05);
+    --socket-border: rgba(15, 23, 42, 0.10);
+    --socket-glow: rgba(37, 99, 235, 0.2);
+}
+
+html[data-theme="neon"],
+body.neon-theme {
+    --glow-hue: 185;          /* Cian vibrante */
+    --shadow-hue: 290;        /* Magenta para sombra */
+    --fiber-color: rgba(6, 182, 212, 0.85);
+    --fiber-glow: rgba(6, 182, 212, 0.55);
+    --social-accent: rgba(6, 182, 212, 0.08);
+    --social-text: rgba(165, 243, 252, 1);
+    --social-text-hover: #22d3ee;
+    --btn-bg-from: #030e14;
+    --btn-bg-to: #030712;
+    --btn-text: #e0f7ff;
+    --socket-bg: rgba(6, 182, 212, 0.1);
+    --socket-border: rgba(6, 182, 212, 0.25);
+    --socket-glow: rgba(6, 182, 212, 0.7);
+}
+
+html[data-theme="glass"],
+html[data-theme="transparent"],
+body.glass-theme,
+body.transparent-theme {
+    --glow-hue: 325;
+    --shadow-hue: 325;
+    --fiber-color: rgba(125, 211, 252, 0.65);
+    --fiber-glow: rgba(56, 189, 248, 0.35);
+    --social-accent: rgba(255, 255, 255, 0.05);
+    --social-text: rgba(203, 213, 225, 1);
+    --social-text-hover: #ffffff;
+    --btn-bg-from: rgba(15, 23, 42, 0.4);
+    --btn-bg-to: rgba(2, 6, 23, 0.6);
+    --btn-text: #ffffff;
+    --socket-bg: rgba(255, 255, 255, 0.06);
+    --socket-border: rgba(255, 255, 255, 0.12);
+    --socket-glow: rgba(56, 189, 248, 0.5);
+}
+
+
+/* ================================================================
+   SECCIÓN 2: SOCIAL LINKS — LIQUID GLASS CON EXPANSIÓN SPRING
+   Referencia: social-btn con width 60px → 180px + cubic-bezier bounce
+   ================================================================ */
+
+.social-links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 52px;
+    width: 52px;
+    padding: 0 16px;
+    border-radius: 100px;
+    text-decoration: none;
+    color: var(--social-text);
+    background: var(--social-accent);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    overflow: hidden;
+    /* Curva de rebote spring — la clave del liquid effect */
+    transition:
+        width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        background 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        color 0.3s ease;
+    cursor: pointer;
+    /* PERF: Blur reducido de 12px a 8px — gran mejora en CPU/GPU */
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    isolation: isolate;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Fiber shimmer pseudo-element */
+.social-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        110deg,
+        transparent 20%,
+        rgba(255, 255, 255, 0.10) 45%,
+        transparent 70%
+    );
+    background-size: 220% 100%;
+    background-position: 160% 0;
+    opacity: 0;
+    transition: opacity 0.4s ease, background-position 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.social-btn:hover::before {
+    opacity: 1;
+    background-position: -100% 0;
+}
+
+/* FIX: Reemplazado el técnica webkit-mask (buggy en Chromium 120+) por inset box-shadow.
+   El fiber glow border ahora usa sombra interior de 1px con el color de fibra —
+   misma estética, cero errores de compositing. */
+.social-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--fiber-color);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.social-btn:hover::after {
+    opacity: 1;
+}
+
+.social-btn .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 4;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.social-btn .social-text {
+    opacity: 0;
+    margin-left: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    position: relative;
+    z-index: 4;
+    transition: opacity 0.25s ease 0.1s, transform 0.3s ease;
+    transform: translateX(-6px);
+    pointer-events: none;
+}
+
+/* === HOVER STATE: EXPANSION LIQUIDA === */
+.social-btn:hover {
+    width: 180px;
+    color: var(--social-text-hover);
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.20);
+    box-shadow:
+        0 12px 32px -8px rgba(0, 0, 0, 0.35),
+        0 0 0 1px var(--fiber-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.social-btn:hover .social-text {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.social-btn:hover .social-icon {
+    transform: scale(1.1);
+}
+
+
+
+/* Neon theme overrides */
+body.neon-theme .social-btn {
+    background: rgba(6, 182, 212, 0.06);
+    border-color: rgba(6, 182, 212, 0.18);
+}
+
+body.neon-theme .social-btn:hover {
+    background: rgba(6, 182, 212, 0.12);
+    border-color: rgba(6, 182, 212, 0.4);
+    box-shadow:
+        0 12px 32px -8px rgba(6, 182, 212, 0.25),
+        0 0 20px -4px rgba(6, 182, 212, 0.3),
+        inset 0 1px 0 rgba(6, 182, 212, 0.15);
+    color: #22d3ee;
+}
+
+
+/* ================================================================
+   SECCIÓN 3: SHINING BUTTON
+   Multi-layer glow: exterior (hsl glow) + interior shimmer + fiber sheen
+   Estado activo, inactivo y neon potenciado
+   ================================================================ */
+
+.shining-btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--btn-text);
+    font-weight: 700;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    background: linear-gradient(
+        315deg,
+        var(--btn-bg-from) -10%,
+        var(--btn-bg-to) 50%,
+        var(--btn-bg-from) 110%
+    );
+    padding: 0.75rem 1.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-top: 1px solid rgba(255, 255, 255, 0.20);
+    border-radius: 12px;
+    cursor: pointer;
+    transition:
+        transform var(--spring-duration) var(--spring-easing),
+        box-shadow var(--spring-duration) ease,
+        border-color 0.3s ease;
+    box-shadow:
+        0 2px 4px 1px hsl(var(--glow-hue) 50% 20% / 0.5),
+        inset 0 -10px 20px -10px hsla(var(--shadow-hue), 10%, 90%, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Fiber optic sheen interior */
+.shining-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        115deg,
+        transparent 20%,
+        rgba(255, 255, 255, 0.14) 45%,
+        rgba(255, 255, 255, 0.06) 52%,
+        transparent 72%
+    );
+    background-size: 220% 100%;
+    background-position: 160% 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: background-position 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shining-btn:hover::before {
+    background-position: -60% 0;
+}
+
+/* Glow exterior pseudo-element */
+.shining-btn::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(
+        135deg,
+        hsl(var(--glow-hue) 70% 60% / 0.5),
+        transparent 50%,
+        hsl(calc(var(--glow-hue) + 40) 60% 55% / 0.3)
+    );
+    opacity: 0;
+    z-index: -1;
+    filter: blur(8px);
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.shining-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+        0 6px 20px 2px hsl(var(--glow-hue) 60% 40% / 0.55),
+        inset 0 -10px 20px -10px hsla(var(--shadow-hue), 10%, 100%, 0.95),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.shining-btn:hover::after {
+    opacity: 1;
+}
+
+.shining-btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow:
+        0 1px 4px hsl(var(--glow-hue) 50% 20% / 0.4),
+        inset 0 2px 6px rgba(0, 0, 0, 0.2),
+        inset 0 -6px 12px -8px hsla(var(--shadow-hue), 10%, 90%, 0.6);
+}
+
+/* Texto dentro del botón */
+.shining-btn .btn-text {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* === Estado: INACTIVO (desconectado, error) === */
+.shining-btn.state-inactive {
+    --glow-hue: 0;           /* Rojo */
+    --shadow-hue: 0;
+    opacity: 0.75;
+}
+
+/* === Estado: ACTIVO / ÉXITO === */
+.shining-btn.state-active {
+    --glow-hue: 150;         /* Verde esmeralda */
+    --shadow-hue: 150;
+}
+
+
+
+/* Neon theme — POTENCIADO */
+body.neon-theme .shining-btn {
+    border-color: rgba(6, 182, 212, 0.25);
+    border-top-color: rgba(6, 182, 212, 0.45);
+    box-shadow:
+        0 0 16px hsl(var(--glow-hue) 80% 50% / 0.35),
+        0 2px 8px hsl(var(--glow-hue) 60% 35% / 0.5),
+        inset 0 -10px 20px -10px hsl(var(--glow-hue) 80% 70% / 0.6),
+        inset 0 1px 0 rgba(6, 182, 212, 0.2);
+}
+
+body.neon-theme .shining-btn:hover {
+    box-shadow:
+        0 0 30px hsl(var(--glow-hue) 85% 55% / 0.55),
+        0 8px 24px hsl(var(--glow-hue) 70% 45% / 0.65),
+        inset 0 -10px 20px -10px hsl(var(--glow-hue) 90% 75% / 0.9),
+        inset 0 1px 0 rgba(6, 182, 212, 0.3);
+}
+
+/* Tool buttons como shining-btn — se hereda todo el estilo */
+.tool-btn.shining-btn {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.85rem 1.2rem;
+}
+
+
+/* ================================================================
+   SECCIÓN 4: THEME SWITCH BUTTON — SOCKET + PRESIÓN FÍSICA
+   Simulación de botón físico con profundidad via inset shadows
+   ================================================================ */
+
+.theme-switch-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.theme-switch-btn .socket {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--socket-bg);
+    border: 1px solid var(--socket-border);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    transition:
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        border-color 0.3s ease,
+        transform 0.22s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-switch-btn .theme-face {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: rgba(203, 213, 225, 0.9);
+    position: relative;
+    z-index: 2;
+    transition:
+        transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        color 0.3s ease;
+}
+
+/* Glow halo — aparece en hover */
+.theme-switch-btn .glow {
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle at center,
+        var(--socket-glow) 0%,
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(6px);
+}
+
+/* Hover: aparece glow suave */
+.theme-switch-btn:hover .socket {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+}
+
+.theme-switch-btn:hover .theme-face {
+    color: #ffffff;
+    transform: scale(1.08);
+}
+
+.theme-switch-btn:hover .glow {
+    opacity: 0.45;
+}
+
+/* Active: simulación de presión física — la sombra se invierte */
+.theme-switch-btn:active .socket {
+    box-shadow:
+        inset 0 3px 8px rgba(0, 0, 0, 0.25),
+        inset 0 1px 3px rgba(0, 0, 0, 0.15),
+        0 1px 2px rgba(255, 255, 255, 0.05);
+    transform: scale(0.96);
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.theme-switch-btn:active .theme-face {
+    transform: scale(0.90);
+}
+
+.theme-switch-btn:active .glow {
+    opacity: 0.7;
+}
+
+
+
+
+/* Neon theme: glow cian vibrante */
+body.neon-theme .theme-switch-btn .socket {
+    border-color: rgba(6, 182, 212, 0.28);
+    box-shadow:
+        0 0 12px rgba(6, 182, 212, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(6, 182, 212, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+body.neon-theme .theme-switch-btn:hover .socket {
+    border-color: rgba(6, 182, 212, 0.5);
+    box-shadow:
+        0 0 24px rgba(6, 182, 212, 0.35),
+        0 6px 18px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(6, 182, 212, 0.2),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+body.neon-theme .theme-switch-btn .theme-face {
+    color: rgba(165, 243, 252, 0.85);
+}
+
+body.neon-theme .theme-switch-btn:hover .theme-face {
+    color: #22d3ee;
+}
+
+
+/* ================================================================
+   SECCIÓN 5: STAT CARD — FIBER OPTIC PULSE INDICATOR
+   ================================================================ */
+.fiber-pulse {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Punto de estado principal */
+.fiber-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--fiber-color);
+    box-shadow: 0 0 6px var(--fiber-glow), 0 0 12px var(--fiber-glow);
+    animation: fiberDotPulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+/* Rastro de luz de fibra que emana del punto */
+.fiber-trail {
+    height: 2px;
+    width: 0;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--fiber-color), transparent);
+    animation: fiberTrailFlow 2s ease-in-out infinite;
+    overflow: hidden;
+}
+
+@keyframes fiberDotPulse {
+    0%, 100% {
+        box-shadow: 0 0 4px var(--fiber-glow), 0 0 8px var(--fiber-glow);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 10px var(--fiber-glow), 0 0 20px var(--fiber-glow), 0 0 30px var(--fiber-glow);
+        transform: scale(1.15);
+    }
+}
+
+@keyframes fiberTrailFlow {
+    0% { width: 0; opacity: 0.8; }
+    60% { width: 36px; opacity: 1; }
+    100% { width: 36px; opacity: 0; }
+}
+
+/* Color por tipo de estado */
+.fiber-dot.status-ok {
+    background: #10b981;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6), 0 0 14px rgba(16, 185, 129, 0.35);
+}
+.fiber-trail.status-ok {
+    background: linear-gradient(90deg, #10b981, transparent);
+}
+
+.fiber-dot.status-warn {
+    background: #f59e0b;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.6), 0 0 14px rgba(245, 158, 11, 0.35);
+}
+.fiber-trail.status-warn {
+    background: linear-gradient(90deg, #f59e0b, transparent);
+}
+
+.fiber-dot.status-error {
+    background: #e11d48;
+    box-shadow: 0 0 6px rgba(225, 29, 72, 0.6), 0 0 14px rgba(225, 29, 72, 0.35);
+    animation: fiberDotPulse 0.8s ease-in-out infinite; /* más rápido en error */
+}
+.fiber-trail.status-error {
+    background: linear-gradient(90deg, #e11d48, transparent);
+}
+
+/* Neon theme: intensificar los colores */
+body.neon-theme .fiber-dot {
+    box-shadow:
+        0 0 8px var(--fiber-glow),
+        0 0 16px var(--fiber-glow),
+        0 0 28px rgba(6, 182, 212, 0.2);
+}
+
+
+/* ================================================================
+   SECCIÓN 6: SHINING TOOL BUTTONS (modal tools)
+   Refactorización de .tool-btn con shining effect multi-tema
+   ================================================================ */
+
+.tool-btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: linear-gradient(
+        135deg,
+        hsl(var(--glow-hue) 70% 38%) 0%,
+        hsl(var(--glow-hue) 60% 28%) 100%
+    );
+    color: #ffffff;
+    border: none;
+    border-top: 1px solid hsl(var(--glow-hue) 70% 52% / 0.5);
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    width: 100%;
+    transition:
+        transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.35s ease,
+        filter 0.25s ease;
+    margin-bottom: 15px;
+    box-shadow:
+        0 4px 14px hsl(var(--glow-hue) 60% 35% / 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    cursor: pointer;
+}
+
+/* Sheen de fibra óptica */
+.tool-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        115deg,
+        transparent 18%,
+        rgba(255, 255, 255, 0.18) 42%,
+        transparent 65%
+    );
+    background-size: 220% 100%;
+    background-position: 160% 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: background-position 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tool-btn:hover::before {
+    background-position: -60% 0;
+}
+
+/* Exterior glow */
+.tool-btn::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    background: hsl(var(--glow-hue) 80% 55% / 0.3);
+    opacity: 0;
+    z-index: -1;
+    filter: blur(10px);
+    transition: opacity 0.4s ease;
+}
+
+.tool-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow:
+        0 8px 22px hsl(var(--glow-hue) 65% 40% / 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.tool-btn:hover::after {
+    opacity: 1;
+}
+
+.tool-btn:active {
+    transform: translateY(0) scale(0.98);
+    filter: brightness(0.95);
+}
+
+/* Light theme tool-btn */
+body.light-theme .tool-btn {
+    background: linear-gradient(
+        135deg,
+        hsl(var(--glow-hue) 65% 52%) 0%,
+        hsl(var(--glow-hue) 55% 42%) 100%
+    );
+    box-shadow:
+        0 4px 14px hsl(var(--glow-hue) 55% 45% / 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+body.light-theme .tool-btn:hover {
+    box-shadow:
+        0 8px 22px hsl(var(--glow-hue) 60% 50% / 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* Neon theme tool-btn */
+body.neon-theme .tool-btn {
+    background: linear-gradient(
+        135deg,
+        rgba(6, 182, 212, 0.75) 0%,
+        rgba(6, 182, 212, 0.45) 100%
+    );
+    border-top-color: rgba(6, 182, 212, 0.6);
+    box-shadow:
+        0 0 18px rgba(6, 182, 212, 0.3),
+        0 4px 14px rgba(6, 182, 212, 0.4),
+        inset 0 1px 0 rgba(6, 182, 212, 0.25);
+}
+
+body.neon-theme .tool-btn:hover {
+    box-shadow:
+        0 0 32px rgba(6, 182, 212, 0.5),
+        0 8px 22px rgba(6, 182, 212, 0.55),
+        inset 0 1px 0 rgba(6, 182, 212, 0.35);
+}
+
+
+/* ================================================================
+   SECCIÓN 7: FOOTER PREMIUM — Credit items con glass refinado
+   ================================================================ */
+
+.footer-credits .credit-item {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, 0.055) 0%,
+            rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.3s ease;
+    isolation: isolate;
+}
+
+.footer-credits .credit-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        110deg,
+        transparent 20%,
+        rgba(255, 255, 255, 0.08) 45%,
+        transparent 70%
+    );
+    background-size: 230% 100%;
+    background-position: 160% 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: background-position 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+}
+
+.footer-credits .credit-item:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.footer-credits .credit-item:hover::before {
+    background-position: -60% 0;
+    opacity: 1;
+}
+
+body.light-theme .footer-credits .credit-item {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(15, 23, 42, 0.08);
+    border-top-color: rgba(255, 255, 255, 0.85);
+}
+
+body.light-theme .footer-credits .credit-item:hover {
+    border-color: rgba(37, 99, 235, 0.18);
+    box-shadow:
+        0 8px 24px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+body.neon-theme .footer-credits .credit-item {
+    background: rgba(6, 182, 212, 0.04);
+    border-color: rgba(6, 182, 212, 0.12);
+    border-top-color: rgba(6, 182, 212, 0.25);
+}
+
+body.neon-theme .footer-credits .credit-item:hover {
+    border-color: rgba(6, 182, 212, 0.3);
+    box-shadow:
+        0 8px 24px rgba(6, 182, 212, 0.15),
+        0 0 12px rgba(6, 182, 212, 0.1),
+        inset 0 1px 0 rgba(6, 182, 212, 0.12);
+}
+
+
+/* ================================================================
+   SECCIÓN 8: QUICK ACTIONS — btn-action shining upgrade
+   ================================================================ */
+
+.btn-action {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    transition:
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.35s ease,
+        border-color 0.3s ease,
+        background 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Sheen override — reemplaza el ::after original de components.css */
+.btn-action::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        110deg,
+        transparent 15%,
+        rgba(255, 255, 255, 0.14) 44%,
+        rgba(255, 255, 255, 0.06) 52%,
+        transparent 70%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.btn-action:hover::after {
+    transform: translateX(120%);
+}
+
+.btn-action:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+body.light-theme .btn-action {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(15, 23, 42, 0.1);
+    color: #0f172a;
+}
+
+body.light-theme .btn-action:hover {
+    background: rgba(255, 255, 255, 0.92);
+    color: #0f172a;
+    box-shadow:
+        0 8px 20px rgba(15, 23, 42, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+body.neon-theme .btn-action:hover {
+    box-shadow:
+        0 8px 20px rgba(6, 182, 212, 0.2),
+        0 0 14px rgba(6, 182, 212, 0.12),
+        inset 0 1px 0 rgba(6, 182, 212, 0.12);
+}
+
+
+/* ================================================================
+   SECCIÓN 9: NETWORK STATUS HEADER PILL — Upgrade glass
+   ================================================================ */
+
+#ping-monitor {
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+#ping-monitor:hover {
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow:
+        0 0 14px rgba(16, 185, 129, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+body.light-theme #ping-monitor {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(15, 23, 42, 0.10);
+    color: #0f172a;
+}
+
+body.light-theme #ping-value {
+    color: #1e293b;
+}
+
+body.neon-theme #ping-monitor:hover {
+    border-color: rgba(6, 182, 212, 0.4);
+    box-shadow:
+        0 0 14px rgba(6, 182, 212, 0.2),
+        inset 0 1px 0 rgba(6, 182, 212, 0.1);
+}
+
+
+
+/* ================================================================
+   SECCIÓN 10: LIGHT THEME — OVERRIDES DE WIDGETS
+   Todos los ajustes de modo claro para componentes premium
+   (Los colores base de texto/fondo están en base.css)
+   ================================================================ */
+
+/* Stat cards — Warm Sky / Sunny Pastel con difuminado sutil anti-deslumbramiento */
+body.light-theme .stat-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.82) 0%, rgba(246, 242, 234, 0.72) 100%) !important;
+    backdrop-filter: blur(20px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+    border: 1px solid rgba(215, 206, 192, 0.70) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.95) !important;
+    box-shadow:
+        0 12px 30px -8px rgba(160, 125, 80, 0.08),
+        0 2px 5px 0 rgba(0, 0, 0, 0.02),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        inset 0 0 16px rgba(255, 255, 255, 0.25) !important;
+}
+
+body.light-theme .stat-card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(248, 245, 238, 0.82) 100%) !important;
+    border-color: rgba(2, 132, 199, 0.45) !important;
+    box-shadow:
+        0 16px 36px -6px rgba(2, 132, 199, 0.14),
+        0 4px 10px 0 rgba(160, 125, 80, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+body.light-theme .stat-card .label {
+    color: #57534e !important;
+    font-weight: 700;
+}
+
+body.light-theme .stat-card .value {
+    font-weight: 800;
+}
+
+body.light-theme #stat-latency .value   { color: #0284c7 !important; }
+body.light-theme #stat-bandwidth .value { color: #4338ca !important; }
+body.light-theme #stat-loss .value      { color: #7c3aed !important; }
+body.light-theme #stat-uptime .value    { color: #059669 !important; }
+
+body.light-theme .stat-card .status-indicator {
+    color: #059669 !important;
+    font-weight: 700;
+}
+
+/* Social buttons — vidrio con tinte azul */
+body.light-theme .social-btn {
+    background: linear-gradient(135deg, rgba(238, 242, 255, 0.80) 0%, rgba(224, 231, 255, 0.60) 100%) !important;
+    border-color: rgba(99, 102, 241, 0.15) !important;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.80) !important;
+    color: #334155 !important;
+}
+
+body.light-theme .social-btn:hover {
+    background: linear-gradient(135deg, rgba(224, 231, 255, 0.90) 0%, rgba(199, 210, 254, 0.70) 100%) !important;
+    border-color: rgba(99, 102, 241, 0.30) !important;
+    color: #0f172a !important;
+    box-shadow:
+        0 10px 24px -6px rgba(99, 102, 241, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.90) !important;
+}
+
+body.light-theme .social-btn svg {
+    color: #4338ca !important;
+}
+
+/* Shining button — modo claro */
+body.light-theme .shining-btn {
+    --btn-bg-from: #ffffff;
+    --btn-bg-to: #f1f5f9;
+    --btn-text: #1e293b;
+    border-color: rgba(99, 102, 241, 0.20) !important;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+body.light-theme .shining-btn:hover {
+    border-color: rgba(99, 102, 241, 0.40) !important;
+    box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+/* Theme switch button */
+body.light-theme .theme-switch-btn .theme-face {
+    background: #ffffff !important;
+    border-color: rgba(99, 102, 241, 0.20) !important;
+    color: #4338ca !important;
+}
+body.light-theme .theme-switch-btn:hover .theme-face {
+    border-color: rgba(99, 102, 241, 0.45) !important;
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.20) !important;
+}
+body.light-theme .theme-switch-btn .socket {
+    background: #e2e8f0 !important;
+    border-color: #cbd5e1 !important;
+}
+body.light-theme .theme-switch-btn .socket .connector {
+    background: #94a3b8 !important;
+}
+body.light-theme .theme-switch-btn:hover .socket {
+    border-color: rgba(99, 102, 241, 0.35) !important;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.15) !important;
+}
+
+/* Ping monitor header widget */
+body.light-theme #ping-monitor {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-color: rgba(99, 102, 241, 0.18) !important;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.06) !important;
+}
+body.light-theme #ping-value {
+    color: #1d4ed8 !important;
+}
+
+/* Time & Date container */
+body.light-theme .time-container {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-color: rgba(99, 102, 241, 0.18) !important;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.06) !important;
+}
+
+body.light-theme #fecha      { color: #78716c !important; }
+body.light-theme #reloj      { color: #0284c7 !important; }
+body.light-theme #zona-horaria { color: #78716c !important; }
+
+/* Cards de contenido */
+body.light-theme .card h3 {
+    color: #292524 !important;
+    font-weight: 800;
+}
+
+body.light-theme .card p,
+body.light-theme .card span {
+    color: #57534e !important;
+}
+
+/* Barra de cumplimiento legal */
+body.light-theme .legal-compliance-bar p {
+    color: #78716c !important;
+}
+
+body.light-theme .legal-compliance-bar strong {
+    color: #292524 !important;
+}
+
+body.light-theme .legal-compliance-bar button {
+    color: #0284c7 !important;
+}
+
+/* Navigation / sidebar items */
+body.light-theme .nav-item {
+    color: #1e293b !important;
+}
+
+body.light-theme .nav-item:hover {
+    color: #0f172a !important;
+    background: rgba(219, 234, 254, 0.60) !important;
+    border-color: rgba(37, 99, 235, 0.25) !important;
+}
+
+/* Dock */
+body.light-theme .dock-item {
+    color: #475569 !important;
+}
+
+body.light-theme .dock-item:hover {
+    color: #0f172a !important;
+}
+
+/* Contadores de estadísticas */
+body.light-theme .stat-box h4 {
+    color: #0f172a !important;
+}
+
+body.light-theme .stat-box .counter {
+    background: linear-gradient(135deg, #1d4ed8 0%, #7c3aed 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* Buscador */
+body.light-theme #search-modal-input {
+    color: #0f172a !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+}
+
+body.light-theme .suggestion-item {
+    background: rgba(241, 245, 249, 0.85) !important;
+    color: #1e293b !important;
+    border-color: rgba(148, 163, 184, 0.20) !important;
+}
+
+/* Modal genérico */
+body.light-theme .modal-body p,
+body.light-theme .modal-body span,
+body.light-theme .custom-summary {
+    color: #0f172a !important;
+}
+
+/* Neon theme stat-cards — texto de alto contraste cian */
+body.neon-theme .stat-card .label {
+    color: rgba(165, 243, 252, 0.70);
+}
+
+body.neon-theme .stat-card .value {
+    filter: brightness(1.1);
+}
+
+/* ================================================================
+   ROUTER 3D DE SCROLL — Malla CSS 3D sólida y completa
+   ================================================================ */
+.router-scroll-showcase {
+    --router-accent: #38bdf8;
+    background: transparent;
+}
+
+.router-scroll-stage {
+    height: clamp(340px, 58vh, 580px);
+    display: grid;
+    place-items: center;
+    perspective: 1400px;
+    overflow: visible;
+    width: 100%;
+    margin-inline: auto;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+.router-scroll-device {
+    position: relative;
+    width: 380px;
+    height: 220px;
+    transform-style: preserve-3d;
+    will-change: transform;
+    margin: 0 auto;
+}
+
+/* Caras de la malla 3D */
+.router-device-top,
+.router-device-bottom,
+.router-device-front,
+.router-device-back,
+.router-device-side {
+    position: absolute;
+    box-sizing: border-box;
+    backface-visibility: hidden;
+}
+
+/* TOP FACE (X=380, Y=220, Z=+26px) */
+.router-device-top {
+    width: 380px;
+    height: 220px;
+    left: 0;
+    top: 0;
+    transform: translateZ(26px);
+    border-radius: 4px;
+    background: linear-gradient(135deg, #334155 0%, #1e293b 45%, #0f172a 100%);
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, .25), 0 20px 45px rgba(2, 6, 23, .7);
+    overflow: hidden;
+}
+
+.router-device-top::after {
+    content: '';
+    position: absolute;
+    inset: 10% 6%;
+    border-radius: 4px;
+    background: linear-gradient(125deg, rgba(255, 255, 255, .06), transparent 40%);
+    pointer-events: none;
+}
+
+/* BOTTOM FACE (X=380, Y=220, Z=-26px) */
+.router-device-bottom {
+    width: 380px;
+    height: 220px;
+    left: 0;
+    top: 0;
+    transform: translateZ(-26px) rotateY(180deg);
+    border-radius: 4px;
+    background: #070d19;
+    border: 1px solid rgba(51, 65, 85, 0.6);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+/* FRONT FACE (X=380, Z=52, Y=+220px) */
+.router-device-front {
+    width: 380px;
+    height: 52px;
+    left: 0;
+    top: 84px;
+    transform: rotateX(-90deg) translateZ(110px);
+    background: linear-gradient(180deg, #0b1324, #030712);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+/* BACK FACE (X=380, Z=52, Y=0px) */
+.router-device-back {
+    width: 380px;
+    height: 52px;
+    left: 0;
+    top: 84px;
+    transform: rotateX(90deg) translateZ(110px);
+    background: linear-gradient(180deg, #111a2e, #090d16);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+}
+
+/* LEFT & RIGHT SIDE FACES (X=0 & X=380, Y=220, Z=52) */
+.router-device-side {
+    width: 52px;
+    height: 220px;
+    left: 164px;
+    top: 0;
+    background: linear-gradient(180deg, #172238, #0d1424);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.router-device-side.left {
+    transform: rotateY(-90deg) translateZ(190px);
+}
+
+.router-device-side.right {
+    transform: rotateY(90deg) translateZ(190px);
+}
+
+.router-vents {
+    position: absolute;
+    width: 44%; height: 50%; left: 28%; top: 25%;
+    background: repeating-linear-gradient(135deg, rgba(2, 6, 23, .95) 0 2px, transparent 2px 7px);
+    opacity: .8;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, .05);
+}
+
+.router-mark { 
+    position: absolute; 
+    right: 8%; 
+    bottom: 14%; 
+    color: rgba(226,232,240,.45); 
+    font: 800 clamp(.6rem, 1.1vw, .85rem)/1 'Space Grotesk', sans-serif; 
+    letter-spacing: .22em; 
+}
+
+.router-leds { display: flex; gap: 14px; }
+.router-leds b { width: 6px; height: 6px; border-radius: 50%; background: var(--router-accent); box-shadow: 0 0 10px color-mix(in srgb, var(--router-accent) 85%, transparent); animation: router-led-pulse 2.4s ease-in-out infinite; }
+.router-leds b:nth-child(2) { animation-delay: .25s; } .router-leds b:nth-child(3) { animation-delay: .5s; } .router-leds b:nth-child(4) { animation-delay: .75s; }
+.router-port { width: 30px; height: 18px; margin: 3px; border-radius: 3px; background: #020617; border: 2px solid #334155; }
+.router-port.wan { border-color: #3b82f6; }
+
+/* Placa base interna revelable (PCB & Procesador NPU) */
+.router-device-inside {
+    position: absolute;
+    width: 372px;
+    height: 212px;
+    left: 4px;
+    top: 4px;
+    transform: translateZ(4px);
+    border-radius: 4px;
+    background: radial-gradient(circle at 50% 50%, #064e3b 0%, #022c22 45%, #020617 100%);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    box-shadow: inset 0 0 25px rgba(6, 78, 59, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    backface-visibility: hidden;
+}
+
+.router-pcb-traces {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle, rgba(52, 211, 153, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.12) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(16, 185, 129, 0.12) 1px, transparent 1px);
+    background-size: 16px 16px, 20px 20px, 20px 20px;
+    opacity: 0.85;
+}
+
+/* Legacy chip styles removed — canonical definitions in Macro-Zoom section below */
+
+
+.cpu-glow {
+    position: absolute;
+    inset: -6px;
+    border: 1px dashed rgba(56, 189, 248, 0.65);
+    border-radius: 16px;
+    animation: cpuSpin 12s linear infinite;
+}
+
+@keyframes cpuPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
+    50% { box-shadow: 0 0 38px rgba(56, 189, 248, 0.9), inset 0 0 20px rgba(56, 189, 248, 0.55); }
+}
+
+@keyframes cpuSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Antenas inclinadas en abanico horizontal Wi-Fi 6 */
+.router-antenna { 
+    position: absolute; 
+    width: 10px; 
+    height: 140px; 
+    border-radius: 5px 5px 2px 2px; 
+    background: linear-gradient(90deg, #090d16, #475569, #0f172a); 
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    transform-origin: bottom center; 
+    z-index: 2; 
+    transition: filter .28s ease, box-shadow .28s ease; 
+}
+
+.antenna-a { left: 45px; top: -140px; transform: translateZ(0px) rotateX(-35deg) rotateY(-30deg); }
+.antenna-b { left: 135px; top: -140px; transform: translateZ(0px) rotateX(-35deg) rotateY(-10deg); }
+.antenna-c { right: 135px; top: -140px; transform: translateZ(0px) rotateX(-35deg) rotateY(10deg); }
+.antenna-d { right: 45px; top: -140px; transform: translateZ(0px) rotateX(-35deg) rotateY(30deg); }
+
+@keyframes router-led-pulse { 0%, 100% { opacity: .48; } 50% { opacity: 1; } }
+
+.theme-option.is-active { color: #fff !important; background: linear-gradient(135deg, #2563eb, #4f46e5); box-shadow: 0 4px 12px rgba(37, 99, 235, .24); }
+body.light-theme .theme-option.is-active { color: #fff !important; background: linear-gradient(135deg, #2563eb, #4f46e5); }
+body.neon-theme .theme-option.is-active { color: #ecfeff !important; background: linear-gradient(135deg, #0891b2, #7c3aed); box-shadow: 0 4px 14px rgba(6, 182, 212, .25); }
+body.transparent-theme .theme-option.is-active { color: #fff !important; background: rgba(51, 65, 85, .92); }
+
+body.light-theme .router-scroll-showcase { --router-accent: #2563eb; background: transparent; }
+body.light-theme .router-scroll-title { color: #0f172a; }
+body.light-theme .router-scroll-desc { color: #475569; }
+body.neon-theme .router-scroll-showcase { --router-accent: #22d3ee; }
+
+/* La pieza explicada por las viñetas recibe un contorno discreto. */
+.router-scroll-device [class*="router-part"], .router-scroll-device .router-antenna, .router-scroll-device .router-vents { transition: border-color .28s ease, box-shadow .28s ease, filter .28s ease; }
+.router-scroll-device[data-part="body"] .router-part-body,
+.router-scroll-device[data-part="ports"] .router-part-ports,
+.router-scroll-device[data-part="vents"] .router-part-vents,
+.router-scroll-device[data-part="inside"] .router-part-inside,
+.router-scroll-device[data-part="leds"] .router-part-leds {
+    border-color: var(--router-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--router-accent) 42%, transparent), 0 0 26px color-mix(in srgb, var(--router-accent) 35%, transparent);
+}
+.router-scroll-device[data-part="antennas"] .router-antenna {
+    filter: brightness(1.4);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--router-accent) 46%, transparent), 0 0 22px color-mix(in srgb, var(--router-accent) 40%, transparent);
+}
+
+.router-scroll-features {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+    color: rgba(203, 213, 225, .92);
+    font-size: clamp(.78rem, 1.1vw, .88rem);
+}
+.router-scroll-features li { 
+    position: relative; 
+    padding-left: 0;
+    line-height: 1.55;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+/* Eliminar pseudo-elemento ::before duplicado sobre emojis */
+.router-scroll-features li::before { 
+    display: none !important;
+}
+body.light-theme .router-scroll-features { color: #334155; }
+body.light-theme .router-scroll-text-container { background: rgba(255, 255, 255, 0.92) !important; border-color: rgba(226, 232, 240, 0.9) !important; box-shadow: 0 16px 40px -4px rgba(15, 23, 42, 0.08) !important; }
+body.light-theme .router-scroll-stage { background: transparent; border: none; box-shadow: none; }
+body.light-theme .brand-telecom { background-image: linear-gradient(105deg, #0284c7, #2563eb 48%, #0ea5e9) !important; text-shadow: 0 0 11px rgba(14, 165, 233, .38); }
+
+/* --- MICRO-DETALLES Y GRABADOS LÁSER TIPO APPLE (MACRO-ZOOM ULTRA-SHARP) --- */
+.router-laser-spec {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    color: rgba(226, 232, 240, 0.7);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.router-laser-top {
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    pointer-events: none;
+}
+
+.laser-model {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+    text-rendering: optimizeLegibility;
+}
+
+.laser-specs {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: rgba(148, 163, 184, 0.65);
+    text-transform: uppercase;
+    text-rendering: optimizeLegibility;
+}
+
+/* NPU Chip — Silicio Biónico con Bisel Metálico y Grabado Láser de Alta Fidelidad */
+.router-cpu-chip {
+    position: relative;
+    z-index: 4;
+    width: 128px;
+    height: 128px;
+    background: radial-gradient(circle at 40% 30%, #1e293b 0%, #0f172a 60%, #020617 100%);
+    border: 1.5px solid rgba(56, 189, 248, 0.85);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    box-shadow:
+        0 0 0 1px rgba(250, 204, 21, 0.35),
+        0 0 32px rgba(56, 189, 248, 0.65),
+        inset 0 0 16px rgba(56, 189, 248, 0.4);
+    animation: cpuPulse 2.8s ease-in-out infinite;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+}
+
+/* Indicador de Pin 1 Dorado en la esquina del procesador */
+.chip-gold-pin {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid #facc15;
+    border-right: 6px solid transparent;
+    filter: drop-shadow(0 0 3px rgba(250, 204, 21, 0.9));
+}
+
+.cpu-brand {
+    color: rgba(226, 232, 240, 0.75);
+    font: 800 0.56rem/1 var(--font-mono);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    text-rendering: optimizeLegibility;
+}
+
+.cpu-core {
+    color: #38bdf8;
+    font: 900 0.84rem/1.1 'Space Grotesk', var(--font-technical), sans-serif;
+    letter-spacing: 0.14em;
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.95);
+    text-align: center;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.cpu-specs {
+    color: #67e8f9;
+    font: 800 0.58rem/1.2 var(--font-mono);
+    letter-spacing: 0.10em;
+    margin-top: 3px;
+    text-shadow: 0 0 8px rgba(103, 232, 249, 0.7);
+    text-align: center;
+    text-rendering: optimizeLegibility;
+}
+
+.cpu-sub {
+    color: rgba(203, 213, 225, 0.85);
+    font: 700 0.52rem/1.2 var(--font-mono);
+    letter-spacing: 0.08em;
+    margin-top: 3px;
+    text-align: center;
+    text-rendering: optimizeLegibility;
+}
+
+.cpu-serial {
+    color: rgba(148, 163, 184, 0.55);
+    font: 600 0.46rem/1 var(--font-mono);
+    letter-spacing: 0.06em;
+    margin-top: 5px;
+    text-rendering: optimizeLegibility;
+}
+
+/* Micro-pines BGA perimetrales de oro alrededor del procesador */
+.router-cpu-chip::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 14px;
+    border: 1px dashed rgba(250, 204, 21, 0.45);
+    pointer-events: none;
+}
+
+/* Componentes SMD en la placa base PCB */
+.pcb-components {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.pcb-chip {
+    position: absolute;
+    background: linear-gradient(145deg, #111827, #030712);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    border-radius: 4px;
+    color: #cbd5e1;
+    font: 800 8px/1.2 var(--font-mono);
+    letter-spacing: 0.08em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-align: center;
+    padding: 2px 4px;
+    text-rendering: optimizeLegibility;
+}
+
+.ram-chip {
+    width: 64px;
+    height: 38px;
+    top: 28px;
+    right: 40px;
+    border-color: rgba(129, 140, 248, 0.6);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+}
+
+.ram-chip span { color: #a5b4fc; font-size: 6.5px; font-weight: 600; margin-top: 2px; }
+
+.flash-chip {
+    width: 48px;
+    height: 30px;
+    bottom: 30px;
+    right: 50px;
+    border-color: rgba(52, 211, 153, 0.5);
+}
+
+.flash-chip span { color: #6ee7b7; font-size: 6.5px; font-weight: 600; margin-top: 2px; }
+
+.fem-chip {
+    width: 32px;
+    height: 28px;
+    top: 32px;
+    left: 48px;
+    border-color: rgba(251, 146, 60, 0.5);
+}
+
+.phy-chip {
+    width: 34px;
+    height: 30px;
+    bottom: 32px;
+    left: 48px;
+    border-color: rgba(56, 189, 248, 0.5);
+}
+
+/* Condensadores electrolíticos de tantalio dorado */
+.pcb-cap {
+    position: absolute;
+    width: 7px;
+    height: 14px;
+    background: linear-gradient(180deg, #f59e0b 0%, #b45309 50%, #f59e0b 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+    border: 1px solid rgba(254, 240, 138, 0.4);
+}
+
+.cap-1 { top: 34px; left: 88px; }
+.cap-2 { top: 52px; left: 88px; }
+.cap-3 { top: 70px; left: 88px; }
+.cap-4 { top: 88px; left: 88px; }
+
+/* Pistas de cobre con brillo eléctrico */
+.copper-bus-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle, rgba(250, 204, 21, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.18) 1px, transparent 1px);
+    background-size: 24px 24px, 32px 32px;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* --- PANEL DE PUERTOS POSTERIORES CON PINES DE ORO BLINDADOS --- */
+.ports-rack {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.port-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.port-tag {
+    font-family: var(--font-mono);
+    font-size: 6.5px;
+    font-weight: 800;
+    color: #cbd5e1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.wan-slot .port-tag {
+    color: #38bdf8;
+    text-shadow: 0 0 8px rgba(56, 189, 248, 0.75);
+}
+
+.port-sub-spec {
+    font-family: var(--font-mono);
+    font-size: 4.8px;
+    font-weight: 700;
+    color: rgba(148, 163, 184, 0.6);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+/* Puerto RJ45 con cavidad blindada */
+.router-port {
+    width: 32px;
+    height: 20px;
+    border-radius: 4px;
+    background: #020617;
+    border: 2px solid #475569;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.router-port.wan {
+    border-color: #3b82f6;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.9), 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.router-port.usb {
+    width: 22px;
+    height: 14px;
+    background: #090d16;
+    border-color: #38bdf8;
+    position: relative;
+}
+
+.router-port.usb::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    right: 3px;
+    height: 4px;
+    background: #0284c7;
+    border-radius: 1px;
+}
+
+/* Pines de oro internos ultra-nítidos visibles en zoom macro */
+.gold-rj45-pins {
+    display: flex;
+    gap: 1.5px;
+    align-items: flex-end;
+    height: 11px;
+    width: 24px;
+    justify-content: center;
+}
+
+.gold-rj45-pins i {
+    display: block;
+    width: 1.2px;
+    height: 8px;
+    background: linear-gradient(180deg, #fef08a 0%, #eab308 60%, #a16207 100%);
+    border-radius: 0.5px;
+    box-shadow: 0 0 2px rgba(250, 204, 21, 0.8);
+}
+
+.gold-rj45-pins i:nth-child(even) {
+    height: 9.5px;
+}
+
+/* --- BARRA DE FASES APPLE KEYNOTE (PILLS SUPERIORES) --- */
+.rscroll-phase-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 1.25rem;
+    padding: 4px;
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    backdrop-filter: blur(12px);
+    width: fit-content;
+}
+
+.phase-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: rgba(148, 163, 184, 0.7);
+    font-family: var(--font-technical);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.phase-pill .phase-idx {
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 0.6rem;
+    opacity: 0.7;
+}
+
+.phase-pill:hover {
+    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.phase-pill.active {
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.15);
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
+}
+
+.phase-pill.active .phase-idx {
+    color: #7dd3fc;
+    opacity: 1;
+}
+
+body.light-theme .rscroll-phase-nav {
+    background: rgba(241, 245, 249, 0.85);
+    border-color: #cbd5e1;
+}
+
+body.light-theme .phase-pill {
+    color: #64748b;
+}
+
+body.light-theme .phase-pill.active {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.1);
+    border-color: rgba(37, 99, 235, 0.35);
+}
+
+/* Callout flotante de telemetría macro durante el zoom */
+.rscroll-macro-callout {
+    margin-top: 1.2rem;
+    padding: 12px 16px;
+    background: rgba(3, 7, 18, 0.75);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-left: 3px solid #38bdf8;
+    border-radius: 12px;
+    backdrop-filter: blur(14px);
+    display: none;
+    animation: fadeIn 0.35s ease;
+}
+
+.rscroll-macro-callout.active {
+    display: block;
+}
+
+.callout-chip-badge {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 800;
+    color: #38bdf8;
+    letter-spacing: 0.10em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.callout-spec-line {
+    font-family: var(--font-mono);
+    font-size: 0.70rem;
+    color: rgba(226, 232, 240, 0.85);
+    line-height: 1.5;
+}
+
+.callout-spec-line b {
+    color: #93c5fd;
+}
+
+body.light-theme .rscroll-macro-callout {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #e2e8f0;
+    border-left-color: #2563eb;
+}
+
+body.light-theme .callout-chip-badge {
+    color: #2563eb;
+}
+
+body.light-theme .callout-spec-line {
+    color: #334155;
+}
+
+body.light-theme .callout-spec-line b {
+    color: #1e40af;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .router-leds b { animation: none; }
+}
+
+/* ================================================================
+   ROUTER 3D SHOWCASE — Integración limpia de temas
+   ================================================================ */
+body.light-theme .router-scroll-showcase { --router-accent: #2563eb; background: transparent; }
+body.neon-theme .router-scroll-showcase { --router-accent: #22d3ee; }
+
+/* Selector de temas glass: aislado de las superficies .liquid-glass. */
+.glass-radio-group {
+    --bg: rgba(255, 255, 255, .06);
+    --text: #e5e7eb;
+    --glass-options: 3;
+    display: flex;
+    position: relative;
+    width: fit-content;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--bg);
+    backdrop-filter: blur(12px);
+    box-shadow: inset 1px 1px 4px rgba(255,255,255,.2), inset -1px -1px 6px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.15);
+}
+.glass-radio-group input { position: absolute; opacity: 0; pointer-events: none; }
+.glass-radio-group label {
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    padding: .48rem .65rem;
+    color: var(--text);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .2px;
+    cursor: pointer;
+    transition: color .3s ease-in-out;
+}
+.glass-radio-group label:hover, .glass-radio-group input:checked + label { color: #fff; }
+.glass-radio-group input:focus-visible + label { outline: 2px solid #93c5fd; outline-offset: -2px; }
+.glass-radio-group .theme-option.is-active { background: transparent !important; box-shadow: none; }
+.glass-glider {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    width: calc(100% / var(--glass-options));
+    border-radius: 1rem;
+    transition: transform .5s cubic-bezier(.37,1.25,.66,1), background .4s ease-in-out, box-shadow .4s ease-in-out;
+}
+#glass-dark:checked ~ .glass-glider { transform: translateX(0%); background: linear-gradient(135deg, #334155cc, #64748b); box-shadow: 0 0 16px rgba(148,163,184,.35), inset 0 0 10px rgba(255,255,255,.16); }
+#glass-light:checked ~ .glass-glider { transform: translateX(100%); background: linear-gradient(135deg, #cbd5e1aa, #f8fafc); box-shadow: 0 0 16px rgba(226,232,240,.45), inset 0 0 10px rgba(255,255,255,.65); }
+#glass-glass:checked ~ .glass-glider,
+#glass-transparent:checked ~ .glass-glider { transform: translateX(200%); background: linear-gradient(135deg, rgba(236, 72, 153, 0.65), rgba(168, 85, 247, 0.85)); box-shadow: 0 0 16px rgba(236, 72, 153, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.38); }
+body.light-theme .glass-radio-group { --bg: rgba(255,255,255,.68); --text: #475569; }
+@media (max-width: 640px) { .glass-radio-group label { min-width: 48px; padding-inline: .45rem; font-size: 8px; } }
+
+/* ================================================================
+   SECCIÓN FINAL: ONE-DIV REVEAL — FLOATING CARDS CON REVELACIÓN
+   Animación flotante 3D + glow profundo + reveal suave del texto
+   Aplica a: stat-cards del hero y tarjetas del grid principal
+   ================================================================ */
+
+/* --- ANIMACIÓN FLOTANTE TIPO ONE-DIV --- */
+@keyframes oneDiv-float {
+    0%, 100% { transform: translateY(0px); }
+    50%      { transform: translateY(-8px); }
+}
+
+/* --- STAT-CARDS: Efecto one-div flotante con reveal --- */
+.analytics-grid .stat-card {
+    position: relative;
+    animation: oneDiv-float 4s ease-in-out infinite;
+    transition: box-shadow .5s ease, border-color .4s ease, transform .3s ease;
+    cursor: default;
+}
+
+/* Delay escalonado para que floten en cascada */
+.analytics-grid .stat-card:nth-child(1) { animation-delay: 0s; }
+.analytics-grid .stat-card:nth-child(2) { animation-delay: .5s; }
+.analytics-grid .stat-card:nth-child(3) { animation-delay: 1s; }
+.analytics-grid .stat-card:nth-child(4) { animation-delay: 1.5s; }
+
+/* Glow profundo en hover (tema oscuro por defecto sin forzar !important sobre light-theme) */
+.analytics-grid .stat-card:hover {
+    animation-play-state: paused;
+    box-shadow:
+        0 0 30px rgba(59, 130, 246, 0.20),
+        0 0 60px rgba(59, 130, 246, 0.08),
+        inset 0 0 25px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+
+#stat-latency:hover   { box-shadow: 0 0 30px rgba(96,165,250,.25), 0 0 60px rgba(96,165,250,.10), inset 0 0 25px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,.10); }
+#stat-bandwidth:hover { box-shadow: 0 0 30px rgba(129,140,248,.25), 0 0 60px rgba(129,140,248,.10), inset 0 0 25px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,.10); }
+#stat-loss:hover      { box-shadow: 0 0 30px rgba(167,139,250,.25), 0 0 60px rgba(167,139,250,.10), inset 0 0 25px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,.10); }
+#stat-uptime:hover    { box-shadow: 0 0 30px rgba(244,114,182,.25), 0 0 60px rgba(244,114,182,.10), inset 0 0 25px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,.10); }
+
+/* LIGHT THEME: ID hovers — sombras cálidas sin inset negro (ID specificity > class) */
+body.light-theme #stat-latency:hover   { box-shadow: 0 0 25px rgba(2,132,199,.18), 0 0 50px rgba(2,132,199,.06), inset 0 0 12px rgba(160,125,80,.03), inset 0 1px 0 rgba(255,255,255,.90) !important; }
+body.light-theme #stat-bandwidth:hover { box-shadow: 0 0 25px rgba(67,56,202,.18), 0 0 50px rgba(67,56,202,.06), inset 0 0 12px rgba(160,125,80,.03), inset 0 1px 0 rgba(255,255,255,.90) !important; }
+body.light-theme #stat-loss:hover      { box-shadow: 0 0 25px rgba(124,58,237,.18), 0 0 50px rgba(124,58,237,.06), inset 0 0 12px rgba(160,125,80,.03), inset 0 1px 0 rgba(255,255,255,.90) !important; }
+body.light-theme #stat-uptime:hover    { box-shadow: 0 0 25px rgba(5,150,105,.18), 0 0 50px rgba(5,150,105,.06), inset 0 0 12px rgba(160,125,80,.03), inset 0 1px 0 rgba(255,255,255,.90) !important; }
+
+/* Valor numérico: transición de escala y opacidad en hover */
+.analytics-grid .stat-card .value {
+    transition: transform .45s cubic-bezier(.16,1,.3,1), opacity .35s ease, text-shadow .45s ease;
+}
+
+.analytics-grid .stat-card:hover .value {
+    transform: scale(1.12);
+    text-shadow: 0 0 18px currentColor;
+}
+
+/* Fiber pulse + status: Indicador activo en vivo */
+.analytics-grid .stat-card .fiber-pulse {
+    opacity: 0.95;
+    transform: none;
+    transition: opacity .35s ease, transform .35s cubic-bezier(.16,1,.3,1);
+}
+
+.analytics-grid .stat-card:hover .fiber-pulse {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+
+/* --- GRID CARDS (#grid-inicio): One-div floating + reveal natural sin solapamientos --- */
+#grid-inicio > .card {
+    transform-style: preserve-3d;
+    isolation: isolate;
+    animation: oneDiv-float 5s ease-in-out infinite;
+}
+
+/* Delay escalonado dentro del grid */
+#grid-inicio > .card:nth-child(1) { animation-delay: 0s; }
+#grid-inicio > .card:nth-child(2) { animation-delay: .35s; }
+#grid-inicio > .card:nth-child(3) { animation-delay: .7s; }
+#grid-inicio > .card:nth-child(4) { animation-delay: 1.05s; }
+#grid-inicio > .card:nth-child(5) { animation-delay: 1.4s; }
+#grid-inicio > .card:nth-child(6) { animation-delay: 1.75s; }
+#grid-inicio > .card:nth-child(7) { animation-delay: 2.1s; }
+#grid-inicio > .card:nth-child(8) { animation-delay: 2.45s; }
+#grid-inicio > .card:nth-child(9) { animation-delay: 2.8s; }
+#grid-inicio > .card:nth-child(10) { animation-delay: 3.15s; }
+
+/* Pausa la flotación en hover para dar sensación de 'atrapada' */
+#grid-inicio > .card:hover {
+    animation-play-state: paused;
+}
+
+/* Glow profundo one-div en hover */
+#grid-inicio > .card:hover {
+    box-shadow:
+        0 0 40px rgba(59, 130, 246, 0.15),
+        0 0 80px rgba(59, 130, 246, 0.06),
+        inset 3px 3px 15px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Título de la card: escala y glow en hover */
+#grid-inicio > .card .card-content h3 {
+    transition: transform .45s cubic-bezier(.16,1,.3,1), text-shadow .45s ease, color .3s ease;
+}
+
+#grid-inicio > .card:hover .card-content h3 {
+    transform: scale(1.02);
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Texto de la tarjeta: legible y natural, sin colisiones ni texto encima */
+#grid-inicio > .card .card-content p {
+    margin-top: .75rem;
+    opacity: .85;
+    line-height: 1.6;
+    transition: opacity .35s ease, transform .35s cubic-bezier(.16,1,.3,1);
+}
+
+#grid-inicio > .card:hover .card-content p,
+#grid-inicio > .card:focus-within .card-content p {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+/* Tag (etiqueta): micro-animación en hover */
+#grid-inicio > .card .tag {
+    transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease;
+}
+
+#grid-inicio > .card:hover .tag {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* --- PANTALLAS TÁCTILES: Optimización de movimiento --- */
+@media (hover: none), (prefers-reduced-motion: reduce) {
+    .analytics-grid .stat-card .fiber-pulse {
+        opacity: 1;
+        transform: none;
+    }
+    .analytics-grid .stat-card,
+    #grid-inicio > .card {
+        animation: none;
+    }
+}
+
+/* --- LIGHT THEME ADAPTATIONS (CIELO CÁLIDO) --- */
+body.light-theme .analytics-grid .stat-card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 245, 238, 0.82) 100%) !important;
+    box-shadow:
+        0 0 25px rgba(2, 132, 199, 0.12),
+        0 0 50px rgba(2, 132, 199, 0.05),
+        inset 0 0 15px rgba(160, 125, 80, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(2, 132, 199, 0.45) !important;
+}
+
+body.light-theme #grid-inicio > .card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(248, 245, 238, 0.80) 100%) !important;
+    box-shadow:
+        0 0 35px rgba(2, 132, 199, 0.08),
+        0 0 70px rgba(2, 132, 199, 0.03),
+        inset 0 0 12px rgba(160, 125, 80, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(2, 132, 199, 0.40) !important;
+}
+
+/* --- GLASS THEME ADAPTATIONS (APPLE VISIONOS) --- */
+body.glass-theme .analytics-grid .stat-card,
+body.transparent-theme .analytics-grid .stat-card {
+    background: rgba(255, 255, 255, 0.075) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: blur(24px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.55),
+                0 0 25px rgba(236, 72, 153, 0.18) !important;
+}
+
+body.glass-theme .analytics-grid .stat-card:hover,
+body.transparent-theme .analytics-grid .stat-card:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    box-shadow:
+        0 0 35px rgba(236, 72, 153, 0.28),
+        0 0 70px rgba(56, 189, 248, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+body.glass-theme #grid-inicio > .card:hover,
+body.transparent-theme #grid-inicio > .card:hover {
+    background: rgba(255, 255, 255, 0.10) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    box-shadow:
+        0 0 45px rgba(236, 72, 153, 0.22),
+        0 0 90px rgba(56, 189, 248, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+/* --- NEON THEME ADAPTATIONS --- */
+body.neon-theme .analytics-grid .stat-card:hover {
+    box-shadow:
+        0 0 35px rgba(6, 182, 212, 0.25),
+        0 0 70px rgba(6, 182, 212, 0.10),
+        inset 0 0 30px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(6, 182, 212, 0.15) !important;
+}
+
+body.neon-theme #grid-inicio > .card:hover {
+    box-shadow:
+        0 0 45px rgba(6, 182, 212, 0.18),
+        0 0 90px rgba(6, 182, 212, 0.07),
+        inset 3px 3px 18px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(6, 182, 212, 0.12);
+}

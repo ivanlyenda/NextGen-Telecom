@@ -1,0 +1,948 @@
+/* ============================================================
+   NEXGEN TELECOM — BASE CSS
+   Variables de Tema, Tipografía Moderna, Reset y Estilos Base
+   (Fuentes cargadas optimizadamente vía head en index.html)
+   ============================================================ */
+
+/* ============================================================
+   VARIABLES GLOBALES (Tema Oscuro por defecto)
+   ============================================================ */
+:root,
+html[data-theme="dark"],
+body.dark-theme {
+    --theme-name: 'dark';
+    --bg: #070b14;
+    --bg-base: #070b14;
+    --text: #f8fafc;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-light: #94a3b8;
+    --surface: rgba(15, 23, 42, 0.68);
+    --border: rgba(255, 255, 255, 0.10);
+    --glow-color: rgba(99, 102, 241, 0.18);
+    --glow: 0 16px 40px -5px rgba(99, 102, 241, 0.18);
+    --card-bg: rgba(15, 23, 42, 0.68);
+    --card-border: rgba(255, 255, 255, 0.10);
+    --primary: #ffffff;
+    --secondary: #38bdf8;
+    --tertiary: #818cf8;
+    --accent: #34d399;
+    --shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.70);
+    --shadow-outer: 0 24px 48px -12px rgba(8, 15, 30, 0.70), 0 8px 20px -6px rgba(2, 6, 23, 0.50);
+    --shadow-inset: inset 0 -1px 1px 0 rgba(0, 0, 0, 0.30);
+    --cursor-color: #818cf8;
+
+    /* Preloader vars (Dark) */
+    --preloader-bg: #0b0f19;
+    --preloader-text: #f8fafc;
+    --preloader-text-sub: #94a3b8;
+    --preloader-orb: #c084fc;
+    --preloader-orb-glow: rgba(168, 85, 247, 0.35);
+    --preloader-bar-bg: rgba(255, 255, 255, 0.08);
+    --preloader-bar-fill: linear-gradient(90deg, #3b82f6, #8b5cf6, #a855f7);
+
+    --sidebar-w: 320px;
+    --header-h: 80px;
+
+    /* Tipografía Ultra-Moderna & Legibilidad Máxima */
+    --font-display: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Space Grotesk', ui-monospace, SFMono-Regular, monospace;
+    --font-technical: 'JetBrains Mono', 'Space Grotesk', ui-monospace, monospace;
+}
+
+/* ============================================================
+   TEMA CLARO — CIELO CÁLIDO / SUNNY PASTEL (ANTI-BRILLO & MÁXIMA LEGIBILIDAD)
+   Fondo lino natural suave que elimina el deslumbramiento y resalta los colores
+   ============================================================ */
+html[data-theme="light"],
+body.light-theme {
+    --theme-name: 'light';
+    --bg: #f5f2eb;
+    --bg-base: #f5f2eb;
+    --text: #1c1917;
+    --text-primary: #1c1917;
+    --text-secondary: #44403c;
+    --text-light: #57534e;
+    --surface: rgba(255, 255, 255, 0.78);
+    --border: rgba(215, 206, 192, 0.72);
+    --glow-color: rgba(2, 132, 199, 0.14);
+    --glow: 0 10px 30px -4px rgba(2, 132, 199, 0.14);
+    --card-bg: rgba(255, 255, 255, 0.78);
+    --card-border: rgba(215, 206, 192, 0.72);
+    --primary: #1c1917;
+    --secondary: #0284c7;
+    --tertiary: #d97706;
+    --accent: #059669;
+    --shadow: 0 8px 24px -4px rgba(160, 125, 80, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+    --shadow-outer: 0 12px 30px -10px rgba(160, 125, 80, 0.07), 0 2px 6px 0 rgba(0, 0, 0, 0.02);
+    --shadow-inset: inset 0 -1px 1px 0 rgba(160, 125, 80, 0.06);
+    --cursor-color: #0284c7;
+
+    /* Preloader vars (Warm Sky) */
+    --preloader-bg: #f5f2eb;
+    --preloader-text: #1c1917;
+    --preloader-text-sub: #57534e;
+    --preloader-orb: #0284c7;
+    --preloader-orb-glow: rgba(2, 132, 199, 0.32);
+    --preloader-bar-bg: rgba(215, 206, 192, 0.60);
+    --preloader-bar-fill: linear-gradient(90deg, #0284c7, #38bdf8, #d97706);
+}
+
+/* ============================================================
+   TEMA GLASSMORPHISM — Apple VisionOS / Iridescent Aurora Glass
+   Superficie multicapa con refracción óptica y luz cenital física
+   ============================================================ */
+html[data-theme="glass"],
+html[data-theme="transparent"],
+body.glass-theme,
+body.transparent-theme {
+    --theme-name: 'glass';
+    --bg: radial-gradient(circle at 18% 18%, #1e1b4b 0%, #0d1224 45%, #050711 100%);
+    --bg-base: #0a0d1a;
+    --text: #ffffff;
+    --text-primary: #ffffff;
+    --text-secondary: #cbd5e1;
+    --text-light: #94a3b8;
+    --surface: rgba(255, 255, 255, 0.075);
+    --border: rgba(255, 255, 255, 0.18);
+    --glow-color: rgba(236, 72, 153, 0.22);
+    --glow: 0 16px 40px -5px rgba(236, 72, 153, 0.22);
+    --card-bg: rgba(255, 255, 255, 0.075);
+    --card-border: rgba(255, 255, 255, 0.18);
+    --primary: #ffffff;
+    --secondary: #38bdf8;
+    --tertiary: #ec4899;
+    --accent: #a855f7;
+    --shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.65);
+    --shadow-outer: 0 24px 48px -12px rgba(8, 15, 30, 0.65), 0 8px 20px -6px rgba(2, 6, 23, 0.45);
+    --shadow-inset: inset 0 -1px 1px 0 rgba(0, 0, 0, 0.25);
+    --cursor-color: #ec4899;
+
+    /* Preloader vars (Glass) */
+    --preloader-bg: radial-gradient(circle at 18% 18%, #1e1b4b 0%, #0d1224 45%, #050711 100%);
+    --preloader-text: #ffffff;
+    --preloader-text-sub: #cbd5e1;
+    --preloader-orb: #ec4899;
+    --preloader-orb-glow: rgba(236, 72, 153, 0.42);
+    --preloader-bar-bg: rgba(255, 255, 255, 0.12);
+    --preloader-bar-fill: linear-gradient(90deg, #38bdf8, #c084fc, #ec4899);
+}
+
+/* ============================================================
+   TEMA NEÓN (COMPATIBILIDAD)
+   ============================================================ */
+body.neon-theme {
+    --theme-name: 'neon';
+    --bg: #030712;
+    --bg-base: #030712;
+    --surface: rgba(6, 182, 212, 0.04);
+    --text: #f0fdff;
+    --text-primary: #f0fdff;
+    --text-secondary: #a5f3fc;
+    --text-light: #a5f3fc;
+    --primary: #ffffff;
+    --secondary: #06b6d4;
+    --tertiary: #a855f7;
+    --accent: #22d3ee;
+    --border: rgba(6, 182, 212, 0.15);
+    --shadow: 0 15px 40px -5px rgba(6, 182, 212, 0.25);
+    --glow-color: rgba(6, 182, 212, 0.35);
+    --glow: 0 10px 30px -5px rgba(6, 182, 212, 0.35);
+    --cursor-color: #22d3ee;
+    --preloader-bg: #030712;
+    --preloader-text: #f0fdff;
+    --preloader-text-sub: #a5f3fc;
+    --preloader-orb: #22d3ee;
+    --preloader-orb-glow: rgba(6, 182, 212, 0.4);
+    --preloader-bar-bg: rgba(6, 182, 212, 0.15);
+    --preloader-bar-fill: linear-gradient(90deg, #06b6d4, #22d3ee, #a855f7);
+}
+
+/* ============================================================
+   RESET GLOBAL
+   ============================================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================================
+   BODY BASE & JERARQUÍA TIPOGRÁFICA
+   ============================================================ */
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+    letter-spacing: -0.011em;
+    line-height: 1.68;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+    font-weight: 700;
+}
+
+@media (pointer: fine) {
+    body {
+        cursor: none;
+    }
+
+    a,
+    button,
+    input,
+    select,
+    .card,
+    .custom-summary,
+    .theme-toggle,
+    .menu-btn,
+    .close-modal,
+    .hotspot,
+    .router-btn,
+    .tool-btn,
+    .dock-item,
+    .theme-option {
+        cursor: none !important;
+    }
+}
+
+/* ============================================================
+   LENIS SMOOTH SCROLLING
+   ============================================================ */
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overflow: clip;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
+/* ============================================================
+   FONDO: RUIDO Y GLOWS AMBIENTALES
+   ============================================================ */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.02;
+    z-index: 2;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.bg-glow-1,
+.bg-glow-2 {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: 0;
+    pointer-events: none;
+    transition: background 0.8s ease;
+}
+
+/* ============================================================
+   CANVAS RED NEURONAL 3D REACTIVA — FONDO ULTRA-ESTILIZADO
+   ============================================================ */
+#network-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    display: block;
+    opacity: 0.70;
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.dark-theme #network-canvas,
+html[data-theme="dark"] #network-canvas {
+    opacity: 0.70;
+}
+
+.bg-glow-1 {
+    top: -10%;
+    left: -10%;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+}
+
+.bg-glow-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+}
+
+/* Glows para tema oscuro */
+html[data-theme="dark"] .bg-glow-1,
+body.dark-theme .bg-glow-1 {
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+}
+html[data-theme="dark"] .bg-glow-2,
+body.dark-theme .bg-glow-2 {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+}
+
+/* Glows para tema claro — Cielo Cálido (Azur despejado & Sol dorado miel) */
+html[data-theme="light"] .bg-glow-1,
+body.light-theme .bg-glow-1 {
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
+}
+html[data-theme="light"] .bg-glow-2,
+body.light-theme .bg-glow-2 {
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.07) 0%, transparent 70%);
+}
+
+/* Glows para tema glassmorphism — Apple VisionOS / Aurora Boreal */
+html[data-theme="glass"] .bg-glow-1,
+body.glass-theme .bg-glow-1,
+body.transparent-theme .bg-glow-1 {
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.22) 0%, transparent 70%);
+}
+html[data-theme="glass"] .bg-glow-2,
+body.glass-theme .bg-glow-2,
+body.transparent-theme .bg-glow-2 {
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, transparent 70%);
+}
+
+/* Glows para tema neón */
+body.neon-theme .bg-glow-1 {
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, transparent 70%);
+}
+body.neon-theme .bg-glow-2 {
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+}
+
+/* ============================================================
+   AJUSTES DE SUPERFICIES POR TEMA
+   ============================================================ */
+
+/* Modo Glassmorphism: Apple VisionOS / Iridescent Specular Glass */
+html[data-theme="glass"] body,
+body.glass-theme {
+    background: radial-gradient(circle at 18% 18%, #1e1b4b 0%, #0d1224 45%, #050711 100%) !important;
+    background-attachment: fixed !important;
+}
+
+html[data-theme="glass"] .card,
+html[data-theme="glass"] .stat-card,
+html[data-theme="glass"] .liquid-glass,
+html[data-theme="glass"] header,
+html[data-theme="glass"] nav,
+html[data-theme="glass"] #liquid-dock,
+body.glass-theme .card,
+body.glass-theme .stat-card,
+body.glass-theme .liquid-glass,
+body.transparent-theme .card,
+body.transparent-theme .stat-card,
+body.transparent-theme header,
+body.transparent-theme nav,
+body.transparent-theme #liquid-dock {
+    background: rgba(255, 255, 255, 0.075) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.32) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.20) !important;
+    backdrop-filter: blur(28px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+    box-shadow: 0 18px 48px 0 rgba(0, 0, 0, 0.58), 0 0 30px rgba(236, 72, 153, 0.16), 0 0 60px rgba(56, 189, 248, 0.10) !important;
+}
+
+body.transparent-theme #network-canvas,
+html[data-theme="glass"] #network-canvas {
+    opacity: 0.85 !important;
+}
+
+/* Neón: superficies con tinte cian */
+body.neon-theme .liquid-glass,
+body.neon-theme .card {
+    background: linear-gradient(135deg,
+            rgba(6, 182, 212, 0.06) 0%,
+            rgba(168, 85, 247, 0.03) 50%,
+            rgba(6, 182, 212, 0.04) 100%) !important;
+    border-color: rgba(6, 182, 212, 0.15) !important;
+    border-top-color: rgba(6, 182, 212, 0.30) !important;
+    box-shadow:
+        0 10px 40px 0 rgba(6, 182, 212, 0.12),
+        inset 0 1px 0 0 rgba(6, 182, 212, 0.08) !important;
+}
+
+body.neon-theme header,
+body.neon-theme nav,
+body.neon-theme #liquid-dock {
+    background: rgba(3, 7, 18, 0.85) !important;
+    border-color: rgba(6, 182, 212, 0.15) !important;
+}
+
+body.neon-theme #network-canvas {
+    opacity: 0.75 !important;
+    filter: hue-rotate(160deg) saturate(1.4) !important;
+}
+
+/* ============================================================
+   PRELOADER ADAPTATIVO — AWWWARDS & VERCEL STYLE
+   Adopta instantáneamente el fondo, textos y halos del data-theme
+   ============================================================ */
+.preloader-overlay {
+    background: var(--preloader-bg, var(--bg));
+    color: var(--preloader-text, var(--text));
+    transition: background 0.4s ease, color 0.4s ease;
+    will-change: transform, opacity;
+}
+
+html[data-theme="glass"] .preloader-overlay,
+body.glass-theme .preloader-overlay,
+body.transparent-theme .preloader-overlay {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%) !important;
+}
+
+.preloader-ambient-glow {
+    position: absolute;
+    width: 440px;
+    height: 440px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--preloader-orb-glow, var(--glow-color)) 0%, transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 1;
+    animation: preloaderPulse 3s ease-in-out infinite alternate;
+}
+
+.preloader-graphic {
+    width: 80px;
+    height: 80px;
+    position: relative;
+}
+
+.preloader-halo {
+    position: absolute;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--preloader-orb-glow, var(--glow-color)) 15%, transparent 70%);
+    filter: blur(14px);
+    animation: preloaderHaloBreath 2.2s ease-in-out infinite alternate;
+}
+
+.preloader-orb {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffffff 0%, var(--preloader-orb, #c084fc) 55%, var(--preloader-orb-glow, #7c3aed) 100%);
+    box-shadow: 0 0 28px var(--preloader-orb-glow, rgba(168, 85, 247, 0.5)), inset 0 0 14px rgba(255, 255, 255, 0.6);
+    animation: preloaderOrbFloat 3s ease-in-out infinite alternate;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preloader-orb-core {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    filter: blur(1.5px);
+    top: 9px;
+    left: 10px;
+}
+
+@keyframes preloaderPulse {
+    0% { transform: scale(0.88); opacity: 0.5; }
+    100% { transform: scale(1.18); opacity: 0.9; }
+}
+
+@keyframes preloaderHaloBreath {
+    0% { transform: scale(0.95); opacity: 0.4; }
+    100% { transform: scale(1.35); opacity: 0.85; }
+}
+
+@keyframes preloaderOrbFloat {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-5px) scale(1.04); }
+}
+
+.preloader-title {
+    color: var(--preloader-text, var(--text));
+    font-family: var(--font-heading);
+}
+
+.preloader-slogan {
+    color: var(--preloader-text-sub, var(--text-light));
+    letter-spacing: 0.28em;
+}
+
+.preloader-label {
+    color: var(--preloader-text-sub, var(--text-light));
+}
+
+.preloader-counter {
+    color: var(--preloader-text, var(--text));
+    font-variant-numeric: tabular-nums;
+}
+
+.preloader-progress-track {
+    background: var(--preloader-bar-bg, rgba(255, 255, 255, 0.08));
+    border: 1px solid var(--border);
+}
+
+.preloader-progress-bar {
+    background: var(--preloader-bar-fill, linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899));
+    box-shadow: 0 0 12px var(--preloader-orb-glow);
+}
+
+/* ============================================================
+   REVELADO ESCALONADO DEL HERO (GSAP)
+   ============================================================ */
+.reveal-hero {
+    will-change: transform, opacity;
+}
+
+/* ============================================================
+   TEMA CLARO — OVERRIDES DE SUPERFICIES Y TEXTO (CIELO CÁLIDO)
+   Todo con !important para garantizar que sobrescriba Tailwind
+   ============================================================ */
+
+/* Header y navegación — Difuminado sutil frosted glass cálido */
+body.light-theme header {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(20px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+    border-color: rgba(215, 206, 192, 0.70) !important;
+    box-shadow: 0 4px 20px -2px rgba(160, 125, 80, 0.06) !important;
+}
+
+body.light-theme header .brand {
+    color: #1c1917 !important;
+}
+
+body.light-theme .menu-btn {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-color: rgba(215, 206, 192, 0.70) !important;
+    color: #0284c7 !important;
+    box-shadow: 0 2px 8px rgba(160, 125, 80, 0.08) !important;
+}
+
+body.light-theme .menu-btn:hover {
+    background: rgba(2, 132, 199, 0.10) !important;
+    border-color: rgba(2, 132, 199, 0.35) !important;
+    color: #0369a1 !important;
+}
+
+body.light-theme nav,
+body.light-theme #liquid-dock {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(20px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+    border-color: rgba(215, 206, 192, 0.70) !important;
+    box-shadow: 0 10px 30px -4px rgba(160, 125, 80, 0.08) !important;
+}
+
+/* Dock inner container */
+body.light-theme #liquid-dock > div,
+body.light-theme .dock-container {
+    background: rgba(255, 255, 255, 0.76) !important;
+    backdrop-filter: blur(18px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+    border-color: rgba(215, 206, 192, 0.70) !important;
+    box-shadow: 0 12px 30px -4px rgba(160, 125, 80, 0.09) !important;
+}
+
+/* Tarjetas de contenido — Frosted Glass Cálido con difuminado sutil anti-deslumbramiento */
+body.light-theme .card,
+body.light-theme .liquid-glass,
+body.light-theme .bento-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.82) 0%, rgba(246, 242, 234, 0.72) 100%) !important;
+    backdrop-filter: blur(20px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+    border: 1px solid rgba(215, 206, 192, 0.70) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.95) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.75) !important;
+    box-shadow:
+        0 1px 3px 0 rgba(0, 0, 0, 0.02),
+        0 10px 28px -6px rgba(160, 125, 80, 0.07),
+        0 4px 10px -2px rgba(160, 125, 80, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.90),
+        inset 0 0 18px rgba(255, 255, 255, 0.25) !important;
+}
+
+body.light-theme .card:hover,
+body.light-theme .liquid-glass:hover,
+body.light-theme .bento-card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(248, 245, 238, 0.82) 100%) !important;
+    border-color: rgba(2, 132, 199, 0.45) !important;
+    box-shadow:
+        0 16px 36px -6px rgba(2, 132, 199, 0.12),
+        0 4px 12px -2px rgba(160, 125, 80, 0.05),
+        inset 0 1px 0 #ffffff !important;
+}
+
+/* Glows ambientales en modo claro — Cielo Cálido */
+body.light-theme .bg-glow-1 {
+    background: radial-gradient(circle, rgba(2, 132, 199, 0.10) 0%, transparent 70%) !important;
+}
+body.light-theme .bg-glow-2 {
+    background: radial-gradient(circle, rgba(217, 119, 6, 0.08) 0%, transparent 70%) !important;
+}
+
+/* ScrollTrigger del Inicio (Telemetría Espectral) — Pantalla Carrier Pro sin brillo blanco */
+body.light-theme .sequence-frame {
+    background: #080d1a !important;
+    border: 1px solid rgba(215, 206, 192, 0.80) !important;
+    box-shadow:
+        0 24px 60px -15px rgba(160, 125, 80, 0.22),
+        0 6px 18px -4px rgba(0, 0, 0, 0.14),
+        inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+}
+
+body.light-theme #sequence-canvas {
+    mix-blend-mode: normal !important;
+    opacity: 0.98 !important;
+}
+
+body.light-theme .sequence-frame::before {
+    border-color: rgba(56, 189, 248, 0.25) !important;
+}
+
+body.light-theme .sequence-copy h2,
+body.light-theme #sequence-text-1 {
+    color: #1c1917 !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .sequence-copy p,
+body.light-theme #sequence-text-2 {
+    color: #0284c7 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .stats-section {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.82) 0%, rgba(246, 242, 234, 0.72) 100%) !important;
+    backdrop-filter: blur(20px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+    border-color: rgba(215, 206, 192, 0.70) !important;
+    box-shadow: 0 12px 32px -4px rgba(160, 125, 80, 0.08) !important;
+}
+
+body.light-theme .callout-content {
+    background: linear-gradient(135deg, rgba(238, 248, 255, 0.92) 0%, rgba(254, 246, 230, 0.82) 100%) !important;
+    backdrop-filter: blur(16px) !important;
+    border-color: rgba(2, 132, 199, 0.35) !important;
+    border-left: 4px solid #0284c7 !important;
+    color: #1c1917 !important;
+}
+
+body.light-theme #cc-title {
+    color: #1c1917 !important;
+}
+
+body.light-theme #cc-desc {
+    color: #44403c !important;
+}
+
+body.light-theme .exp-item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(246, 242, 234, 0.75) 100%) !important;
+    backdrop-filter: blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+    border-color: rgba(215, 206, 192, 0.70) !important;
+    box-shadow: 0 4px 16px -2px rgba(160, 125, 80, 0.05) !important;
+}
+
+body.light-theme .exp-item:hover {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(2, 132, 199, 0.45) !important;
+    box-shadow: 0 14px 28px -4px rgba(2, 132, 199, 0.12) !important;
+}
+
+body.light-theme .exp-item h3 {
+    color: #1c1917 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .exp-item p {
+    color: #44403c !important;
+}
+
+body.light-theme #no-results {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
+    border-color: rgba(215, 206, 192, 0.75) !important;
+    color: #1c1917 !important;
+}
+
+body.light-theme .footer-credits .credit-item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(246, 242, 234, 0.75) 100%) !important;
+    backdrop-filter: blur(16px) !important;
+    border-color: rgba(215, 206, 192, 0.70) !important;
+    box-shadow: 0 4px 14px -2px rgba(160, 125, 80, 0.06) !important;
+}
+
+body.light-theme .footer-credits .credit-item:hover {
+    border-color: rgba(2, 132, 199, 0.35) !important;
+    box-shadow: 0 8px 24px rgba(160, 125, 80, 0.10) !important;
+}
+
+body.light-theme .credit-item b {
+    color: #0284c7 !important;
+}
+
+body.light-theme .credit-item span {
+    color: #1c1917 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .legal-compliance-bar {
+    border-top-color: rgba(215, 206, 192, 0.70) !important;
+    color: #57534e !important;
+}
+
+/* Todos los textos — Alto Contraste y Cero Cansancio Visual */
+body.light-theme,
+body.light-theme p,
+body.light-theme span,
+body.light-theme li,
+body.light-theme label,
+body.light-theme td,
+body.light-theme th {
+    color: var(--text);
+}
+
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4,
+body.light-theme h5,
+body.light-theme h6 {
+    color: #1c1917 !important;
+}
+
+body.light-theme .text-slate-300 {
+    color: #44403c !important;
+}
+
+body.light-theme .text-slate-400 {
+    color: #57534e !important;
+}
+
+body.light-theme .text-slate-500 {
+    color: #78716c !important;
+}
+
+body.light-theme .text-white {
+    color: #1c1917 !important;
+}
+
+/* Colores semánticos y badges en modo claro con armonía cálida */
+body.light-theme .text-emerald-400 { color: #059669 !important; }
+body.light-theme .text-indigo-400 { color: #4338ca !important; }
+body.light-theme .text-purple-400 { color: #7c3aed !important; }
+body.light-theme .text-pink-400 { color: #db2777 !important; }
+body.light-theme .text-blue-400 { color: #0284c7 !important; }
+body.light-theme .text-cyan-400 { color: #0284c7 !important; }
+body.light-theme .text-amber-400 { color: #d97706 !important; }
+body.light-theme .text-rose-400 { color: #e11d48 !important; }
+
+body.light-theme .tag.text-amber-500,
+body.light-theme [class*="text-amber-500"] {
+    color: #b45309 !important;
+}
+body.light-theme .tag.text-sky-500,
+body.light-theme [class*="text-sky-500"] {
+    color: #0284c7 !important;
+}
+body.light-theme .tag.text-emerald-500,
+body.light-theme [class*="text-emerald-500"] {
+    color: #047857 !important;
+}
+
+/* Contenedor del reloj */
+body.light-theme .time-container {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
+    border-color: rgba(215, 206, 192, 0.70) !important;
+    box-shadow: 0 4px 14px rgba(160, 125, 80, 0.05) !important;
+}
+
+body.light-theme #fecha {
+    color: #57534e !important;
+}
+
+body.light-theme #reloj {
+    color: #0284c7 !important;
+}
+
+body.light-theme #zona-horaria {
+    color: #57534e !important;
+}
+
+/* Ping monitor */
+body.light-theme #ping-monitor {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
+    border-color: rgba(215, 206, 192, 0.70) !important;
+    color: #1c1917 !important;
+}
+
+body.light-theme #ping-value {
+    color: #1c1917 !important;
+}
+
+/* Network canvas en modo claro — RED NEURONAL VÍVIDA Y BIEN VISIBLE */
+body.light-theme #network-canvas {
+    opacity: 0.90 !important;
+}
+
+/* Sidebar (nav) items */
+body.light-theme .nav-item {
+    color: #1c1917 !important;
+}
+
+body.light-theme .nav-item:hover {
+    color: #0284c7 !important;
+    background: rgba(2, 132, 199, 0.09) !important;
+    border-color: rgba(2, 132, 199, 0.25) !important;
+}
+
+/* Formulario / inputs */
+body.light-theme input,
+body.light-theme select,
+body.light-theme textarea,
+body.light-theme .main-input {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(231, 224, 213, 0.90) !important;
+    color: #292524 !important;
+    box-shadow: 0 2px 6px -1px rgba(180, 140, 90, 0.04) !important;
+}
+
+body.light-theme input:focus,
+body.light-theme select:focus,
+body.light-theme textarea:focus,
+body.light-theme .main-input:focus {
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
+}
+
+body.light-theme input::placeholder,
+body.light-theme .main-input::placeholder {
+    color: #78716c !important;
+}
+
+/* Modal */
+body.light-theme .modal-content,
+body.light-theme #search-modal > div,
+body.light-theme [id$="-modal"] .rounded-2xl,
+body.light-theme [id$="-modal"] .rounded-3xl {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(246, 242, 234, 0.90) 100%) !important;
+    backdrop-filter: blur(24px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
+    border-color: rgba(215, 206, 192, 0.80) !important;
+    box-shadow: 0 25px 50px -12px rgba(160, 125, 80, 0.14) !important;
+    color: #292524 !important;
+}
+
+/* Scrollbar en modo claro */
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: #d6cfc7;
+    border-color: #faf8f5;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: #a8a29e;
+}
+
+/* Cursor outline en modo claro */
+body.light-theme .cursor-outline {
+    border-color: #0284c7;
+}
+
+body.light-theme .cursor-hover .cursor-outline {
+    background-color: rgba(2, 132, 199, 0.08);
+}
+
+/* ============================================================
+   CURSOR PERSONALIZADO
+   ============================================================ */
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--cursor-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: background-color 0.3s, width 0.1s, height 0.1s;
+}
+
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--cursor-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.3s;
+}
+
+.cursor-hover .cursor-outline {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(167, 139, 250, 0.1);
+    border-color: transparent;
+}
+
+/* ============================================================
+   SCROLLBAR PREMIUM
+   ============================================================ */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--text-light);
+    border-radius: 10px;
+    border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
+}

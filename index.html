@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0f19">
+    <link rel="manifest" href="manifest.json">
+
+    <script>
+        (function() {
+            try {
+                let savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'transparent') savedTheme = 'glass';
+                if (!savedTheme) {
+                    savedTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+                }
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                if (savedTheme === 'light') {
+                    document.documentElement.classList.remove('dark');
+                } else {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
+
+    <title>NexGen Telecom | Gestión de Redes Premium</title>
+    <meta name="description" content="Centro de conocimiento definitivo para gestión de redes, diagnóstico CMD, calculadora IPv4, modelo OSI, seguridad Wi-Fi y herramientas de networking. Proyecto académico SENA Ficha 3147350.">
+
+    <!-- Google Fonts Suite: Outfit (Display/Headings), Plus Jakarta Sans & Inter (Cuerpo & Alta Legibilidad), JetBrains Mono (Tech & Datos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b1120',
+                        darkSurface: 'rgba(30, 41, 59, 0.5)',
+                        borderGlow: 'rgba(255, 255, 255, 0.08)',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
+                        display: ['"Plus Jakarta Sans"', '"Outfit"', 'system-ui', 'sans-serif'],
+                        heading: ['"Plus Jakarta Sans"', '"Outfit"', 'system-ui', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', '"Space Grotesk"', 'ui-monospace', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Chart.js (defer para no bloquear render) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
+
+    <!-- GSAP & Lenis CDN (defer para no bloquear render) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" defer></script>
+
+    <link rel="stylesheet" href="css/base.css?v=20261017a">
+    <link rel="stylesheet" href="css/layout.css?v=20260706e">
+    <link rel="stylesheet" href="css/components.css?v=20260723a">
+    <link rel="stylesheet" href="css/3d.css?v=20260808a">
+    <link rel="stylesheet" href="css/responsive.css?v=20261017a">
+    <link rel="stylesheet" href="css/widgets-premium.css?v=20260808a">
+
+    <!-- QRCode.js para generación de QR de red -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
+</head>
+
+<body class="min-h-screen relative overflow-x-hidden antialiased font-sans">
+
+    <!-- PRELOADER ADAPTATIVO AWWWARDS / VERCEL STYLE -->
+    <div id="preloader" class="preloader-overlay fixed inset-0 z-[99999] flex flex-col items-center justify-center select-none" role="status" aria-label="Cargando plataforma">
+        <!-- Halo ambiental de resplandor (Glow) reactivo al data-theme -->
+        <div class="preloader-ambient-glow" aria-hidden="true"></div>
+
+        <div class="preloader-content flex flex-col items-center justify-center text-center px-6 relative z-10 max-w-sm w-full">
+            <!-- Elemento gráfico minimalista: esfera pastel con halo -->
+            <div class="preloader-graphic mb-8 relative flex items-center justify-center" aria-hidden="true">
+                <div class="preloader-halo"></div>
+                <div class="preloader-orb">
+                    <div class="preloader-orb-core"></div>
+                </div>
+            </div>
+
+            <!-- Título y Eslogan obligatorio -->
+            <div class="preloader-brand mb-6 text-center">
+                <h2 class="preloader-title text-3xl md:text-4xl font-extrabold tracking-tight">
+                    NextGen-<span class="brand-telecom bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Telecom</span>
+                </h2>
+                <p class="preloader-slogan text-[11px] md:text-xs font-bold tracking-[0.28em] uppercase mt-2">
+                    CONECTANDO EL FUTURO
+                </p>
+            </div>
+
+            <!-- Barra de progreso sutil y contador numérico en tiempo real -->
+            <div class="preloader-progress-wrap w-full max-w-[280px] mt-4">
+                <div class="flex items-center justify-between text-xs font-mono mb-2 px-1">
+                    <span class="preloader-label font-medium opacity-80">Cargando la web...</span>
+                    <span id="preloader-counter" class="preloader-counter font-bold text-sm tracking-wider">1%</span>
+                </div>
+                <div class="preloader-progress-track w-full h-[3px] rounded-full overflow-hidden">
+                    <div id="preloader-progress-bar" class="preloader-progress-bar h-full rounded-full w-[1%] transition-all duration-75"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Failsafe de emergencia: desbloquea la web si algún script falla en producción -->
+    <script>
+        setTimeout(function() {
+            var pl = document.getElementById('preloader');
+            if (pl && pl.style.display !== 'none') {
+                pl.style.opacity = '0';
+                pl.style.transition = 'opacity 0.6s ease';
+                setTimeout(function() { if (pl) pl.style.display = 'none'; }, 600);
+            }
+        }, 3500);
+    </script>
+
+    <!-- Capas estéticas y decorativas de fondo -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="bg-glow-1" aria-hidden="true"></div>
+    <div class="bg-glow-2" aria-hidden="true"></div>
+
+    <!-- Overlay de Modo Concentración -->
+    <div id="focus-overlay" aria-hidden="true"></div>
+
+    <!-- Banner de Modo Concentración -->
+    <div class="focus-mode-banner" id="focus-mode-banner" role="status" aria-live="polite">Modo Concentración Activo — Red Silenciada</div>
+
+    <!-- Canvas de red neuronal reactiva -->
+    <canvas id="network-canvas"
+        class="fixed top-0 left-0 w-full h-full pointer-events-none z-[1] transition-opacity duration-700"
+        aria-label="Red neuronal animada de fondo decorativo">Tu navegador no soporta canvas.</canvas>
+
+    <!-- Cursor personalizado -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Botón Volver Arriba -->
+    <button id="back-to-top"
+        class="fixed bottom-8 right-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white w-14 h-14 rounded-2xl shadow-lg shadow-blue-500/25 flex items-center justify-center z-[1000] transition-all duration-300 hover:-translate-y-1 hover:brightness-110 active:scale-95 animate-fade-in"
+        aria-label="Volver arriba" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m18 15-6-6-6 6" />
+        </svg>
+    </button>
+
+    <!-- Overlay del menú lateral -->
+    <div class="sidebar-overlay fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-[998] opacity-0 pointer-events-none transition-opacity duration-300"
+        id="overlay"></div>
+
+    <!-- Barra de progreso de scroll -->
+    <div id="scroll-progress-bar" class="scroll-progress-bar" aria-hidden="true"></div>
+
+    <!-- Encabezado Principal -->
+    <header
+        class="fixed top-0 left-0 w-full h-20 bg-slate-950/70 border-b border-white/10 flex items-center justify-between px-6 md:px-12 z-[1000] backdrop-blur-md transition-all duration-300">
+        <div class="left-side flex items-center gap-6">
+            <button
+                class="menu-btn interactive-hover bg-white/5 border border-white/10 hover:border-blue-500/50 p-2.5 rounded-xl text-blue-400 hover:text-indigo-400 shadow-md transition-all duration-300 flex items-center justify-center"
+                id="btn-toggle-menu" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar">
+                <div class="hamburger-box">
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                </div>
+            </button>
+            <div class="brand text-xl md:text-2xl font-extrabold tracking-tight text-white">
+                NextGen-<span
+                    class="brand-telecom bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Telecom</span>
+            </div>
+        </div>
+        <div class="right-side flex items-center gap-6">
+            <div class="network-status interactive-hover hidden md:flex items-center gap-2 bg-white/5 border border-white/10 py-1.5 px-4 rounded-full text-xs font-mono font-bold shadow-inner"
+                id="ping-monitor" title="Latencia al servidor DNS">
+                <span class="ping-dot w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="ping-value" class="text-slate-300">--ms</span>
+            </div>
+
+            <button id="btn-install"
+                class="btn-install interactive-hover hidden bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-xs font-bold py-2.5 px-5 rounded-xl hover:-translate-y-0.5 hover:brightness-110 shadow-lg shadow-blue-500/20 active:scale-95 transition-all">Instalar
+                App</button>
+
+            <!-- Botón Cambiar Tema — Premium Socket/Glow -->
+            <button
+                class="theme-switch-btn"
+                id="theme-btn" aria-label="Cambiar tema">
+                <div class="socket">
+                    <div class="theme-face">
+                        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <svg id="sun-icon" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </div>
+                    <div class="glow"></div>
+                </div>
+            </button>
+
+            <div
+                class="time-container hidden md:flex flex-col justify-center bg-white/5 border border-white/10 px-5 py-1 rounded-xl shadow-md text-center">
+                <div id="fecha" class="text-[9px] text-slate-400 font-extrabold tracking-widest uppercase">--/--/----
+                </div>
+                <div id="reloj" class="text-sm font-mono font-bold text-blue-400">--:--</div>
+                <div id="zona-horaria" class="text-[8px] text-slate-500 uppercase tracking-wide">Local</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menú Lateral Ultra-Premium -->
+    <nav class="sidebar" id="sidebar" data-lenis-prevent>
+        <!-- Cabecera de estado del Sidebar -->
+        <div class="sidebar-header px-3 pb-3 mb-3 border-b border-slate-200/60 dark:border-white/10 flex flex-col gap-2.5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-semibold text-slate-800 dark:text-slate-200 tracking-wide">NexGen Telecom</span>
+                </div>
+                <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-500 border border-blue-500/20">10G Activa</span>
+            </div>
+            <button class="sidebar-search-btn w-full text-left p-2.5 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-blue-500/10 border border-slate-200 dark:border-white/10 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between transition-all cursor-pointer" id="sidebar-search-btn">
+                <span class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    Buscar herramienta...
+                </span>
+                <kbd class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-white/10">⌘K</kbd>
+            </button>
+        </div>
+
+        <div class="sidebar-section space-y-1.5">
+            <h4
+                class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-3 mb-2 border-l-2 border-blue-500">
+                Diagnóstico y Hardware</h4>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="home" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🏠 Inicio / Dashboard</span>
+                <span class="nav-badge badge-blue">HOME</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="diagnostico" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">💻 Diagnóstico y CMD</span>
+                <span class="nav-badge badge-emerald">CMD</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="fibra-optica" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">⚡ Fibra Óptica vs Cobre</span>
+                <span class="nav-badge badge-amber">FTTH</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="lan" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🔌 Armado (T568A / T568B)</span>
+                <span class="nav-badge badge-cyan">LAN</span>
+            </div>
+        </div>
+
+        <div class="sidebar-section space-y-1.5 mt-3">
+            <h4
+                class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-3 mb-2 border-l-2 border-indigo-500">
+                Herramientas Funcionales</h4>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="monitor-trafico" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">📊 Monitor Tráfico (Live)</span>
+                <span class="nav-badge badge-rose">LIVE</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="calc-subnet" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🧮 Calculadora IPv4</span>
+                <span class="nav-badge badge-indigo">CALC</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="wifi-planner" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">📡 Planificador Wi-Fi</span>
+                <span class="nav-badge badge-sky">WIFI</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="mtu-mss" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">📐 Optimizador MTU/MSS</span>
+                <span class="nav-badge badge-purple">MSS</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="gen-wpa3" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🔑 Generador WPA3</span>
+                <span class="nav-badge badge-amber">WPA3</span>
+            </div>
+        </div>
+
+        <div class="sidebar-section space-y-1.5 mt-3">
+            <h4
+                class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-3 mb-2 border-l-2 border-purple-500">
+                Redes, Teoría y Seguridad</h4>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="modelo-osi" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🌐 Modelo OSI & TCP/IP</span>
+                <span class="nav-badge badge-blue">OSI</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="subnetting" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🏷️ Teoría IP y DHCP</span>
+                <span class="nav-badge badge-indigo">DHCP</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="qos" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🎯 Priorización QoS</span>
+                <span class="nav-badge badge-emerald">QoS</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="seguridad-red" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🛡️ Seguridad & Firewalls</span>
+                <span class="nav-badge badge-rose">SEC</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="vpn" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🔒 VPN y Privacidad</span>
+                <span class="nav-badge badge-purple">VPN</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="ip-publica" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">🌍 IP Pública & CGNAT</span>
+                <span class="nav-badge badge-cyan">NAT</span>
+            </div>
+            <div class="nav-item js-manual-trigger interactive-hover cursor-pointer p-2.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 border border-transparent hover:border-slate-300 dark:hover:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all text-xs font-medium flex items-center justify-between"
+                data-target="wifi-publico" role="button" tabindex="0">
+                <span class="flex items-center gap-2.5">⚠️ Peligros Wi-Fi Abierto</span>
+                <span class="nav-badge badge-amber">WARN</span>
+            </div>
+        </div>
+
+        <div
+            class="sidebar-footer mt-auto border-t border-slate-200 dark:border-white/10 pt-3 text-slate-500 dark:text-slate-400 text-xs space-y-1 px-3">
+            <h5 class="font-bold text-slate-700 dark:text-slate-300 tracking-wide uppercase mb-0.5">Información Académica
+            </h5>
+            <p><span class="font-semibold text-blue-500 dark:text-blue-400">Instructor:</span> Diego Cordero</p>
+            <p><span class="font-semibold text-cyan-500 dark:text-cyan-400">Mentor:</span> Vladimir Quintana</p>
+            <p><span class="font-semibold text-blue-500 dark:text-blue-400">Ficha SENA:</span> 3147350</p>
+            <p><span class="font-semibold text-blue-500 dark:text-blue-400">Desarrollador:</span> Iván Steven Parra</p>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main id="main-content"
+        class="w-full max-w-7xl mx-auto px-6 md:px-12 pt-32 pb-20 relative z-10 transition-transform duration-500">
+
+        <!-- Hero Section -->
+        <section class="hero text-center mb-16 flex flex-col items-center">
+            <h1 class="reveal-hero text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+                NexGen <span
+                    class="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent">Telecom</span>
+            </h1>
+            <p class="reveal-hero text-slate-400 text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed mb-12 font-medium">
+                El centro de conocimiento definitivo desarrollado para la resolución de problemas técnicos, conectividad
+                y gestión de redes modernas.
+            </p>
+
+            <!-- Grid de Estadísticas / Widget de Red — Con Fiber Pulse Indicator -->
+            <div class="reveal-hero analytics-grid grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full max-w-4xl mb-12">
+                <div class="stat-card liquid-glass rounded-2xl p-5 hover:border-blue-500/50 transition-colors duration-300 shadow-lg"
+                    id="stat-latency">
+                    <span
+                        class="label text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Latencia
+                        de Red</span>
+                    <div class="value text-2xl md:text-3xl font-extrabold text-blue-400">-- ms</div>
+                    <div class="fiber-pulse mt-2">
+                        <div class="fiber-dot status-ok"></div>
+                        <div class="fiber-trail status-ok"></div>
+                        <span class="status-indicator text-[10px] text-emerald-400 font-semibold ml-1">En Línea</span>
+                    </div>
+                </div>
+                <div class="stat-card liquid-glass rounded-2xl p-5 hover:border-indigo-500/50 transition-colors duration-300 shadow-lg"
+                    id="stat-bandwidth">
+                    <span class="label text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Ancho
+                        de Banda</span>
+                    <div class="value text-2xl md:text-3xl font-extrabold text-indigo-400">-- Mbps</div>
+                    <div class="fiber-pulse mt-2">
+                        <div class="fiber-dot status-ok" style="background:#818cf8; box-shadow: 0 0 6px rgba(129,140,248,0.7), 0 0 12px rgba(129,140,248,0.4);"></div>
+                        <div class="fiber-trail" style="background: linear-gradient(90deg, #818cf8, transparent);"></div>
+                    </div>
+                </div>
+                <div class="stat-card liquid-glass rounded-2xl p-5 hover:border-purple-500/50 transition-colors duration-300 shadow-lg"
+                    id="stat-loss">
+                    <span
+                        class="label text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Pérdida
+                        de Paquetes</span>
+                    <div class="value text-2xl md:text-3xl font-extrabold text-purple-400">--%</div>
+                    <div class="fiber-pulse mt-2">
+                        <div class="fiber-dot status-ok" style="background:#a78bfa; box-shadow: 0 0 6px rgba(167,139,250,0.7), 0 0 12px rgba(167,139,250,0.4);"></div>
+                        <div class="fiber-trail" style="background: linear-gradient(90deg, #a78bfa, transparent);"></div>
+                    </div>
+                </div>
+                <div class="stat-card liquid-glass rounded-2xl p-5 hover:border-pink-500/50 transition-colors duration-300 shadow-lg"
+                    id="stat-uptime">
+                    <span class="label text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Uptime
+                        del Sistema</span>
+                    <div class="value text-2xl md:text-3xl font-extrabold text-pink-400">99.9%</div>
+                    <div class="fiber-pulse mt-2">
+                        <div class="fiber-dot status-ok" style="background:#f472b6; box-shadow: 0 0 6px rgba(244,114,182,0.7), 0 0 12px rgba(244,114,182,0.4);"></div>
+                        <div class="fiber-trail" style="background: linear-gradient(90deg, #f472b6, transparent);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acciones Rápidas -->
+            <div class="reveal-hero quick-actions flex flex-wrap justify-center gap-4 mb-16">
+                <button
+                    class="btn-action interactive-hover flex items-center gap-3 bg-white/5 border border-white/10 hover:border-blue-500/50 text-slate-200 hover:text-white py-3.5 px-8 rounded-2xl text-sm font-bold shadow-md hover:-translate-y-1 transition-all duration-300 js-manual-trigger"
+                    data-target="calc-subnet">
+                    <svg class="text-blue-500 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                    </svg>
+                    Calculadora IP
+                </button>
+                <button
+                    class="btn-action interactive-hover flex items-center gap-3 bg-white/5 border border-white/10 hover:border-indigo-500/50 text-slate-200 hover:text-white py-3.5 px-8 rounded-2xl text-sm font-bold shadow-md hover:-translate-y-1 transition-all duration-300 js-manual-trigger"
+                    data-target="monitor-trafico">
+                    <svg class="text-indigo-500 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                    Monitor de Red
+                </button>
+                <button
+                    class="btn-action interactive-hover flex items-center gap-3 bg-white/5 border border-white/10 hover:border-emerald-500/50 text-slate-200 hover:text-white py-3.5 px-8 rounded-2xl text-sm font-bold shadow-md hover:-translate-y-1 transition-all duration-300 js-manual-trigger"
+                    data-target="wifi-planner">
+                    <svg class="text-emerald-500 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M5 13a10 10 0 0 1 14 0"></path>
+                        <path d="M8.5 16.5a5 5 0 0 1 7 0"></path>
+                        <path d="M2 9a15 15 0 0 1 20 0"></path>
+                        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                    </svg>
+                    Plan Wi-Fi
+                </button>
+            </div>
+
+            <!-- Buscador del Dashboard principal -->
+            <div class="reveal-hero search-box w-full max-w-2xl relative mb-16">
+                <input type="text" id="buscador"
+                    class="main-input w-full bg-slate-900/50 border border-white/10 hover:border-blue-500/50 text-slate-200 placeholder-slate-400 py-5 pl-14 pr-6 rounded-2xl text-sm md:text-base outline-none shadow-lg transition-all duration-300"
+                    placeholder="Buscar problema (Ej: 'comandos', 'fibra', 'wifi lento')...">
+            </div>
+        </section>
+
+        <!-- Contenedor de Búsqueda sin Resultados -->
+        <div id="no-results"
+            class="bg-slate-900/60 border border-dashed border-white/10 rounded-3xl p-10 max-w-lg mx-auto mb-16 text-center backdrop-blur-md hidden">
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">No encontramos ese problema</h2>
+            <p class="text-slate-400 text-sm mb-6">Asegúrate de escribir palabras clave sencillas.</p>
+            <a href="#" id="google-link" target="_blank"
+                class="global-btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all inline-block">Buscar
+                en Google</a>
+        </div>
+
+        <!-- Seccion de Secuencia de Imagenes (Fijado por Scroll / Apple Mockup Frame) -->
+        <section id="sequence-section"
+            class="relative w-full h-[130vh] overflow-hidden mb-20 flex flex-col justify-start">
+            <div class="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center p-4 z-10">
+
+                <!-- Recuadro Bezel de Canvas más Pequeño y Estético -->
+                <div
+                    class="sequence-frame w-full max-w-xl aspect-video bg-slate-950/60 border border-white/10 rounded-[32px] overflow-hidden shadow-2xl backdrop-blur-md relative p-2.5 flex items-center justify-center">
+                    <canvas id="sequence-canvas"
+                        class="w-full h-full object-cover rounded-[22px] opacity-75 mix-blend-screen"></canvas>
+
+                    <!-- Destello y reflejo en el marco -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none rounded-[32px]">
+                    </div>
+                </div>
+
+                <!-- Textos dinámicos en Scroll -->
+                <div class="sequence-copy mt-8 text-center max-w-md pointer-events-none">
+                    <h2 class="text-white text-3xl md:text-4xl font-extrabold tracking-tight opacity-0 translate-y-6"
+                        id="sequence-text-1">
+                        Telemetría Espectral AI
+                    </h2>
+                    <p class="text-blue-400 text-xs md:text-sm mt-2 opacity-0 translate-y-6" id="sequence-text-2">
+                        Monitoreo activo de atenuación óptica en redes FTTH GPON.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Panel de Tarjetas de Conocimiento -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20" id="grid-inicio">
+
+            <div class="card md:col-span-2 md:row-span-2 liquid-glass rounded-[32px] p-8 md:p-10 hover:border-blue-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="monitor-trafico"
+                data-key="herramienta monitor red trafico banda chart grafica velocidad en vivo">
+                <div class="card-content relative z-10 flex flex-col justify-between h-full min-h-[300px]">
+                    <div>
+                        <div
+                            class="tag bg-amber-500/10 border border-amber-500/30 text-amber-500 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                            Dashboard Activo</div>
+                        <h3
+                            class="text-2xl md:text-4xl font-extrabold text-white mb-4 leading-tight group-hover:text-blue-400 transition-colors">
+                            Monitor de Tráfico (Live)</h3>
+                        <p class="text-slate-400 text-sm md:text-base leading-relaxed max-w-md">Visualiza el
+                            comportamiento de la red local. Gráficas en tiempo real que miden la fluctuación de subida y
+                            bajada de datos mediante Chart.js.</p>
+                    </div>
+                </div>
+                <div class="border-beam"></div>
+                <div class="ambient-glow"></div>
+            </div>
+
+            <div class="card liquid-glass rounded-2xl p-6 hover:border-indigo-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="calc-subnet" data-key="herramienta calculadora ip subnetting red mascara host broadcast">
+                <div class="card-content relative z-10">
+                    <div
+                        class="tag bg-sky-500/10 border border-sky-500/30 text-sky-500 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                        Herramienta Nivel 3</div>
+                    <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-indigo-400 transition-colors">
+                        Calculadora IPv4</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Calcula rangos de IP, direcciones de red,
+                        broadcast y hosts disponibles basados en la máscara de subred.</p>
+                </div>
+                <div class="border-beam"></div>
+            </div>
+
+            <div class="card liquid-glass rounded-2xl p-6 hover:border-emerald-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="gen-wpa3" data-key="herramienta generador contraseña password wpa3 seguridad wifi router">
+                <div class="card-content relative z-10">
+                    <div
+                        class="tag bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                        Criptografía</div>
+                    <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+                        Generador WPA3</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Crea contraseñas robustas impenetrables por fuerza
+                        bruta, ideal para configurar nuevos routers.</p>
+                </div>
+                <div class="border-beam"></div>
+            </div>
+
+            <div class="card liquid-glass rounded-2xl p-6 hover:border-emerald-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="qos" data-key="qos priorizacion gaming lag juegos ping ms ancho de banda bloquear">
+                <div class="card-content relative z-10">
+                    <div
+                        class="tag bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                        Optimización</div>
+                    <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+                        QoS y Gaming</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Aprende a priorizar paquetes TCP/UDP en el router
+                        para eliminar el lag durante partidas competitivas.</p>
+                </div>
+                <div class="border-beam"></div>
+            </div>
+
+            <div class="card liquid-glass rounded-2xl p-6 hover:border-sky-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="subnetting" data-key="teoria subnetting dhcp ip ipv4 mascara red host dns">
+                <div class="card-content relative z-10">
+                    <div
+                        class="tag bg-sky-500/10 border border-sky-500/30 text-sky-500 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                        Teoría Base</div>
+                    <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-sky-400 transition-colors">
+                        Subnetting y DHCP</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Entiende cómo el router reparte direcciones IPs y
+                        limita la cantidad de dispositivos conectados.</p>
+                </div>
+                <div class="border-beam"></div>
+            </div>
+
+            <div class="card liquid-glass rounded-2xl p-6 hover:border-sky-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="modelo-osi"
+                data-key="teoria modelo osi capas tcp ip protocolos router switch enlace transporte">
+                <div class="card-content relative z-10">
+                    <div
+                        class="tag bg-sky-500/10 border border-sky-500/30 text-sky-500 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                        Teoría de Redes</div>
+                    <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-sky-400 transition-colors">Modelo
+                        OSI y TCP/IP</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Comprende la estructura fundamental de internet.
+                        Cómo viaja la información desde tu cable físico hasta el navegador.</p>
+                </div>
+                <div class="border-beam"></div>
+            </div>
+
+            <div class="card liquid-glass rounded-2xl p-6 hover:border-purple-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="fibra-optica" data-key="fibra optica cable coaxial hfc cobre atenuacion ftth gpon ont luz">
+                <div class="card-content relative z-10">
+                    <div
+                        class="tag bg-purple-500/10 border border-purple-500/30 text-purple-500 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                        Infraestructura</div>
+                    <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-purple-400 transition-colors">
+                        Fibra Óptica vs Cobre</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Conoce las diferencias técnicas entre las
+                        conexiones FTTH de vidrio y las redes híbridas HFC.</p>
+                </div>
+                <div class="border-beam"></div>
+            </div>
+
+            <div class="card lg:col-span-2 liquid-glass rounded-2xl p-6 hover:border-emerald-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="seguridad-red"
+                data-key="seguridad firewall mac filtrado wpa3 ddos puertos cerrar antivirus">
+                <div class="card-content relative z-10">
+                    <div
+                        class="tag bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                        Administración</div>
+                    <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+                        Seguridad y Firewalls</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Protege tu red desde el router. Aprende sobre
+                        filtrado de direcciones MAC, apertura de puertos segura y protección contra ataques externos.
+                    </p>
+                </div>
+                <div class="border-beam"></div>
+            </div>
+
+            <div class="card liquid-glass rounded-2xl p-6 hover:border-emerald-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="wifi-planner" data-key="wifi canal cobertura 2.4 5ghz interferencia router señal mesh">
+                <div class="card-content relative z-10">
+                    <div
+                        class="tag bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                        Cobertura</div>
+                    <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+                        Planificador Wi-Fi</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Recomienda banda, canal y ubicación del router
+                        según paredes, interferencia y cantidad de dispositivos.</p>
+                </div>
+                <div class="border-beam"></div>
+            </div>
+
+            <div class="card liquid-glass rounded-2xl p-6 hover:border-cyan-500/50 transition-colors duration-300 relative overflow-hidden group cursor-pointer js-manual-trigger shadow-lg"
+                data-target="mtu-mss" data-key="mtu mss vpn pppoe fragmentacion paquetes cortes wireguard">
+                <div class="card-content relative z-10">
+                    <div
+                        class="tag bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full w-fit mb-4">
+                        Optimización WAN</div>
+                    <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                        MTU / MSS</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Calcula tamaños seguros de paquete para fibra,
+                        PPPoE y VPNs evitando fragmentación.</p>
+                </div>
+                <div class="border-beam"></div>
+            </div>
+        </section>
+
+        <!-- Estadisticas Demograficas -->
+        <section
+            class="stats-section grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 bg-slate-900/50 border border-white/5 rounded-[40px] p-8 md:p-12 mb-20 shadow-xl backdrop-blur-md"
+            id="stats-section">
+            <div class="stat-box text-center">
+                <h3 class="counter text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
+                    data-target="8.7" data-suffix="M">0</h3>
+                <h4 class="text-white text-sm md:text-base font-bold tracking-wide mt-2 mb-1">Hogares con Internet Fijo
+                </h4>
+                <p class="text-slate-400 text-xs md:text-sm leading-relaxed">En Colombia, aproximadamente 8.74 millones
+                    de hogares tienen acceso a internet fijo, cubriendo al 49% del país.</p>
+            </div>
+            <div class="stat-box text-center">
+                <h3 class="counter text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
+                    data-target="86" data-suffix="%">0</h3>
+                <h4 class="text-white text-sm md:text-base font-bold tracking-wide mt-2 mb-1">Penetración Internet Móvil
+                </h4>
+                <p class="text-slate-400 text-xs md:text-sm leading-relaxed">El acceso a Internet móvil abarca a la
+                    amplia mayoría de la población colombiana, clave en zonas rurales.</p>
+            </div>
+            <div class="stat-box text-center">
+                <h3 class="counter text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
+                    data-target="47" data-suffix="%">0</h3>
+                <h4 class="text-white text-sm md:text-base font-bold tracking-wide mt-2 mb-1">Liderazgo Mercado Móvil
+                </h4>
+                <p class="text-slate-400 text-xs md:text-sm leading-relaxed">Claro mantiene el liderazgo indiscutible
+                    del mercado móvil. Tigo y Movistar alcanzan el 35.6% conjunto.</p>
+            </div>
+            <div class="stat-box text-center">
+                <h3 class="counter text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
+                    data-target="37" data-suffix="%">0</h3>
+                <h4 class="text-white text-sm md:text-base font-bold tracking-wide mt-2 mb-1">Liderazgo Mercado Fijo
+                </h4>
+                <p class="text-slate-400 text-xs md:text-sm leading-relaxed">En el segmento de internet fijo para
+                    hogares, Claro domina frente a sus competidores directos.</p>
+            </div>
+        </section>
+
+        <!-- Separador conector de datos al hardware -->
+        <div class="circuit-connector-divider" aria-hidden="true">
+            <div class="circuit-line"></div>
+            <div class="circuit-node">
+                <span class="circuit-pulse"></span>
+                <span class="circuit-label">DATOS ➔ HARDWARE</span>
+            </div>
+            <div class="circuit-line"></div>
+        </div>
+
+        <!-- Showcase de Hardware en 360 Grados -->
+        <section
+            class="router-showcase-container bg-slate-900/20 rounded-[40px] border border-white/5 p-8 md:p-12 mb-20 relative z-5">
+            <div class="router-external-header text-center mb-8">
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-3">Arquitectura de Hardware en 360°</h2>
+                <p class="text-slate-400 text-sm md:text-base font-medium">Arrastra para rotar el dispositivo. Observa
+                    la propagación de señal Wi-Fi 6 y los estados LED en tiempo real.</p>
+            </div>
+
+            <div class="router-controls" role="group" aria-label="Controles del router">
+                <button class="router-btn" id="btn-autorotate" type="button" aria-pressed="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                    Auto-rotar
+                </button>
+                <button class="router-btn" id="btn-explode" type="button" aria-pressed="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 1 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    Vista interna
+                </button>
+            </div>
+
+            <!-- El visualizador 3D -->
+            <div class="router-showcase bg-slate-950/65 rounded-[32px] border border-white/5 py-12 backdrop-blur-md"
+                id="router-section">
+                <div class="router-container relative w-full min-h-[400px] flex items-center justify-center">
+
+                    <div class="router-scene w-[300px] h-[300px] flex items-center justify-center cursor-grab select-none z-10 touch-pan-y"
+                        id="router-scene">
+                        <div class="router-3d relative w-[250px] h-[60px]" id="router-model">
+                            <div class="antenna ant-1">
+                                <div class="ant-tip"></div>
+                                <div class="wifi-wave"></div>
+                            </div>
+                            <div class="antenna ant-2">
+                                <div class="ant-tip"></div>
+                                <div class="wifi-wave"></div>
+                            </div>
+                            <div class="antenna ant-3">
+                                <div class="ant-tip"></div>
+                                <div class="wifi-wave"></div>
+                            </div>
+                            <div class="antenna ant-4">
+                                <div class="ant-tip"></div>
+                                <div class="wifi-wave"></div>
+                            </div>
+
+                            <div class="face front">
+                                <div class="led-panel">
+                                    <span class="led pwr"></span>
+                                    <span class="led wifi" id="led-wifi"></span>
+                                    <span class="led eth" id="led-eth"></span>
+                                </div>
+                                <div class="hotspot interactive-hover" style="top:50%; left:85%;"
+                                    data-title="Panel LED Diagnóstico"
+                                    data-desc="Monitoreo visual instantáneo. El parpadeo irregular indica procesamiento activo de paquetes TCP/UDP.">
+                                </div>
+                            </div>
+
+                            <div class="face back">
+                                <div class="ports">
+                                    <span class="wan-port"></span> <span></span><span></span><span></span><span></span>
+                                </div>
+                                <div class="hotspot interactive-hover" style="top:50%; left:20%;"
+                                    data-title="Puerto WAN (Gigabit)"
+                                    data-desc="Recibe el enlace troncal (Internet) desde la ONT o Cablemódem. Separado lógicamente de la red LAN.">
+                                </div>
+                                <div class="hotspot interactive-hover" style="top:50%; left:65%;"
+                                    data-title="Switch LAN Integrado"
+                                    data-desc="Interfaces que comunican los dispositivos internos. Transmiten a 10/100/1000 Mbps bidireccionalmente.">
+                                </div>
+                            </div>
+
+                            <div class="face left">
+                                <div class="hotspot interactive-hover" style="top:50%; left:50%;"
+                                    data-title="Botón WPS / Reset"
+                                    data-desc="Emparejamiento seguro sin clave. Al sostenerlo 15s, ejecuta un Hard Reset restaurando el firmware de fábrica.">
+                                </div>
+                            </div>
+                            <div class="face right"></div>
+
+                            <div class="face top">
+                                <div class="ventilation-grill"></div>
+                                <div class="brand-logo">NEXGEN</div>
+                                <div class="hotspot interactive-hover" style="top:50%; left:50%;"
+                                    data-title="Procesador NPU Integrado"
+                                    data-desc="CPU Quad-Core con motor neuronal. Gestiona el QoS priorizando dinámicamente los paquetes críticos.">
+                                </div>
+                                <div class="hotspot interactive-hover" style="top:15%; left:80%;"
+                                    data-title="Tecnología Wi-Fi 6 (802.11ax)"
+                                    data-desc="Sistema MIMO 4x4 y modulación OFDMA. Permite que múltiples dispositivos se comuniquen sin congestión.">
+                                </div>
+                            </div>
+                            <div class="face bottom">
+                                <div class="ventilation-grill-bottom"></div>
+                                <div class="hotspot interactive-hover" style="top:50%; left:50%;"
+                                    data-title="Disipación Térmica"
+                                    data-desc="Rejillas estratégicas para enfriamiento pasivo continuo. Evita el estrangulamiento térmico bajo cargas extremas.">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HUD del callout overlay -->
+                    <svg class="callout-svg absolute top-0 left-0 w-full h-full pointer-events-none z-10"
+                        id="callout-svg">
+                        <polyline class="callout-line" id="callout-line" points="0,0 0,0 0,0"></polyline>
+                    </svg>
+
+                    <div class="callout-card" id="callout-card">
+                        <div
+                            class="callout-content bg-slate-950/90 border border-blue-500/50 border-l-4 border-l-blue-500 p-5 rounded-2xl shadow-xl backdrop-blur-md relative">
+                            <div
+                                class="callout-indicator absolute left-[-6px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50">
+                            </div>
+                            <div class="callout-text space-y-2">
+                                <h4 id="cc-title" class="text-white text-base font-extrabold">--</h4>
+                                <p id="cc-desc" class="text-slate-300 text-xs md:text-sm leading-relaxed">--</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explicacion de Hardware -->
+            <div class="router-explanation mt-10">
+                <div class="exp-grid grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div
+                        class="exp-item bg-slate-900/40 hover:bg-slate-900/60 border border-white/5 hover:border-blue-500/30 p-6 md:p-8 rounded-3xl transition-all">
+                        <div class="exp-icon text-3xl mb-4">⚡</div>
+                        <h3 class="text-white text-lg font-bold mb-2">¿Para qué sirve un Router?</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Es el cerebro de tu red local. Toma la
+                            conexión a internet que entra por el cable de tu operador y la divide de forma inteligente,
+                            entregándola a todos tus dispositivos sin que los datos colisionen.</p>
+                    </div>
+                    <div
+                        class="exp-item bg-slate-900/40 hover:bg-slate-900/60 border border-white/5 hover:border-indigo-500/30 p-6 md:p-8 rounded-3xl transition-all">
+                        <div class="exp-icon text-3xl mb-4">🛡️</div>
+                        <h3 class="text-white text-lg font-bold mb-2">Seguridad Activa (Firewall)</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">No solo da WiFi, también actúa como un muro de
+                            contención. Los routers modernos inspeccionan los paquetes entrantes y bloquean accesos no
+                            autorizados desde el exterior.</p>
+                    </div>
+                    <div
+                        class="exp-item bg-slate-900/40 hover:bg-slate-900/60 border border-white/5 hover:border-purple-500/30 p-6 md:p-8 rounded-3xl transition-all">
+                        <div class="exp-icon text-3xl mb-4">🚀</div>
+                        <h3 class="text-white text-lg font-bold mb-2">Optimización de Señal</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">A través de hardware y algoritmos como el
+                            "Beamforming", el router detecta físicamente dónde está tu celular y concentra la potencia
+                            de la onda electromagnética en esa dirección específica.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             ROUTER SCROLL SHOWCASE — Apple-style crossfade al scroll
+             5 vistas de un router real que cambian conforme el usuario desliza
+             ============================================================ -->
+<section id="router-scroll-section" class="router-scroll-showcase mb-20" style="height: 380vh;">
+            <div class="router-scroll-sticky sticky top-0 left-0">
+                <div class="router-scroll-stage" aria-label="Router Wi-Fi 6 en vista tridimensional de alta precisión">
+                    <div class="router-scroll-device" id="router-scroll-device" aria-hidden="true">
+                        <i class="router-antenna antenna-a"></i><i class="router-antenna antenna-b"></i>
+                        <i class="router-antenna antenna-c"></i><i class="router-antenna antenna-d"></i>
+                        <!-- Tapa Superior Desacoplable con Grabados Láser -->
+                        <div class="router-device-top router-part-body" id="rscroll-top-lid">
+                            <span class="router-vents router-part-vents"></span>
+                            <span class="router-mark">NEXGEN</span>
+                            <div class="router-laser-top">
+                                <span class="laser-model">NEXGEN ENTERPRISE AX9000-PRO</span>
+                                <span class="laser-specs">Wi-Fi 6 · 2.5G GPON SOC · DUAL-BAND BEAMFORMING</span>
+                            </div>
+                            <span class="router-laser-spec">DESIGNED BY NEXGEN IN CALIFORNIA · MODEL A2894 · FCC ID: 2AXNG-PRO9K</span>
+                        </div>
+                        <!-- Placa Interna Revelable (PCB & Procesador NPU con Micro-Grabados) -->
+                        <div class="router-device-inside router-part-inside">
+                            <div class="router-cpu-chip" id="rscroll-npu-chip">
+                                <div class="chip-gold-pin"></div>
+                                <span class="cpu-brand">NEXGEN SILICON</span>
+                                <span class="cpu-core">NPU BIONIC X6</span>
+                                <span class="cpu-specs">16 TOPS · 4.2 GHz 8-CORE</span>
+                                <span class="cpu-sub">PACKET CO-PROCESSOR</span>
+                                <span class="cpu-serial">SN: NXG-9984-24A7 · 4NM</span>
+                                <div class="cpu-glow"></div>
+                            </div>
+                            <div class="copper-bus-lines"></div>
+                            <div class="router-pcb-traces"></div>
+                            <div class="pcb-components">
+                                <div class="pcb-chip ram-chip">SK-HYNIX<span>4GB LPDDR5</span></div>
+                                <div class="pcb-chip flash-chip">KIOXIA<span>32GB eMMC</span></div>
+                                <div class="pcb-chip fem-chip">MURATA<span>5G FEM</span></div>
+                                <div class="pcb-chip phy-chip">REALTEK<span>2.5G PHY</span></div>
+                                <span class="pcb-cap cap-1"></span>
+                                <span class="pcb-cap cap-2"></span>
+                                <span class="pcb-cap cap-3"></span>
+                                <span class="pcb-cap cap-4"></span>
+                            </div>
+                        </div>
+                        <div class="router-device-bottom"></div>
+                        <div class="router-device-front router-part-leds"><span class="router-leds"><b></b><b></b><b></b><b></b></span></div>
+                        <!-- Panel de Puertos Traseros Blindados con Pines de Oro Reales -->
+                        <div class="router-device-back router-part-ports">
+                            <div class="ports-rack">
+                                <div class="port-slot wan-slot">
+                                    <span class="port-tag">2.5G WAN</span>
+                                    <div class="router-port wan">
+                                        <div class="gold-rj45-pins">
+                                            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                                        </div>
+                                    </div>
+                                    <span class="port-sub-spec">GPON SFP+</span>
+                                </div>
+                                <div class="port-slot lan-slot">
+                                    <span class="port-tag">LAN 1</span>
+                                    <div class="router-port">
+                                        <div class="gold-rj45-pins">
+                                            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                                        </div>
+                                    </div>
+                                    <span class="port-sub-spec">1000M POE+</span>
+                                </div>
+                                <div class="port-slot lan-slot">
+                                    <span class="port-tag">LAN 2</span>
+                                    <div class="router-port">
+                                        <div class="gold-rj45-pins">
+                                            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                                        </div>
+                                    </div>
+                                    <span class="port-sub-spec">1000M</span>
+                                </div>
+                                <div class="port-slot lan-slot">
+                                    <span class="port-tag">LAN 3</span>
+                                    <div class="router-port">
+                                        <div class="gold-rj45-pins">
+                                            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                                        </div>
+                                    </div>
+                                    <span class="port-sub-spec">1000M</span>
+                                </div>
+                                <div class="port-slot lan-slot">
+                                    <span class="port-tag">LAN 4</span>
+                                    <div class="router-port">
+                                        <div class="gold-rj45-pins">
+                                            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                                        </div>
+                                    </div>
+                                    <span class="port-sub-spec">1000M</span>
+                                </div>
+                                <div class="port-slot aux-slot">
+                                    <span class="port-tag">USB 3.2</span>
+                                    <div class="router-port usb"></div>
+                                    <span class="port-sub-spec">10 Gbps</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="router-device-side left"></div><div class="router-device-side right"></div>
+                    </div>
+                </div>
+
+                <!-- Textos sincronizados con el scroll tipo Apple Keynote -->
+                <div class="router-scroll-text-container">
+                    <div class="rscroll-phase-nav" id="rscroll-phase-nav" aria-label="Fases del desglose de hardware">
+                        <button class="phase-pill active" data-step="0"><span class="phase-idx">01</span><span class="phase-name">General</span></button>
+                        <button class="phase-pill" data-step="1"><span class="phase-idx">02</span><span class="phase-name">Chasis</span></button>
+                        <button class="phase-pill" data-step="2"><span class="phase-idx">03</span><span class="phase-name">NPU Chip</span></button>
+                        <button class="phase-pill" data-step="3"><span class="phase-idx">04</span><span class="phase-name">Antenas</span></button>
+                        <button class="phase-pill" data-step="4"><span class="phase-idx">05</span><span class="phase-name">Puertos</span></button>
+                    </div>
+
+                    <span class="router-scroll-badge" id="rscroll-badge">VISTA GENERAL</span>
+                    <h2 class="router-scroll-title" id="rscroll-title">El Centro de Mando de tu Hogar</h2>
+                    <p class="router-scroll-desc" id="rscroll-desc">Un router potente diseñado para que nunca más tengas que reiniciar el módem ni sufrir lentitud cuando todos en casa están conectados.</p>
+                    <ul class="router-scroll-features" id="rscroll-features" aria-label="Características del router">
+                        <li>🚀 Reparte el internet a máxima velocidad sin bajones ni cortes.</li>
+                        <li>📱 Conecta más de 60 dispositivos a la vez sin perder fuerza.</li>
+                        <li>🛡️ Filtra amenazas antes de que toquen tus equipos.</li>
+                    </ul>
+
+                    <!-- Telemetría técnica flotante para fases de macro-zoom -->
+                    <div class="rscroll-macro-callout" id="rscroll-macro-callout">
+                        <div class="callout-chip-badge" id="callout-badge">🔬 TELEMETRÍA DE SILICIO NPU</div>
+                        <div class="callout-spec-line" id="callout-line-1"><b>Arquitectura:</b> TSMC 4nm FinFET Extreme UV</div>
+                        <div class="callout-spec-line" id="callout-line-2"><b>Rendimiento:</b> 16 TOPS Red Neuronal Dedicada</div>
+                        <div class="callout-spec-line" id="callout-line-3"><b>Throughput:</b> Conmutación de Paquetes en &lt; 0.12 µs</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             NETWORK OPERATIONS CENTER (NOC) — Telemetría Global en Vivo
+             ============================================================ -->
+        <section id="noc-telemetry-section" class="noc-section mb-20">
+            <!-- Encabezado de Sección -->
+            <div class="noc-header text-center mb-10">
+                <span class="noc-badge">TELEMETRÍA & TOPOLOGÍA NACIONAL</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white mt-3 mb-4 tracking-tight">Centro de Operaciones de Red (NOC)</h2>
+                <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+                    Monitoreo en vivo de los nodos troncales de fibra óptica y análisis de enrutamiento BGP en Colombia.
+                </p>
+            </div>
+
+            <!-- Métricas de Telemetría Global -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+                <div class="telemetry-card">
+                    <div class="telemetry-icon text-emerald-400">⚡</div>
+                    <div class="telemetry-val text-white font-mono" id="noc-uptime">99.998%</div>
+                    <div class="telemetry-lbl">Disponibilidad Backbone</div>
+                    <div class="telemetry-sub text-emerald-400">● Enlace Activo SLA Industrial</div>
+                </div>
+                <div class="telemetry-card">
+                    <div class="telemetry-icon text-blue-400">📶</div>
+                    <div class="telemetry-val text-white font-mono" id="noc-latency">8.2 ms</div>
+                    <div class="telemetry-lbl">Latencia Media Troncal</div>
+                    <div class="telemetry-sub text-blue-400">● Fibra G.652D Baja Dispersión</div>
+                </div>
+                <div class="telemetry-card">
+                    <div class="telemetry-icon text-indigo-400">🎯</div>
+                    <div class="telemetry-val text-white font-mono" id="noc-loss">0.0001%</div>
+                    <div class="telemetry-lbl">Pérdida de Paquetes</div>
+                    <div class="telemetry-sub text-indigo-400">● Enrutamiento Anycast BGP</div>
+                </div>
+                <div class="telemetry-card">
+                    <div class="telemetry-icon text-purple-400">🔒</div>
+                    <div class="telemetry-val text-white font-mono" id="noc-cipher">TLS 1.3</div>
+                    <div class="telemetry-lbl">Cifrado de Enlace</div>
+                    <div class="telemetry-sub text-purple-400">● Túnel WireGuard Activo</div>
+                </div>
+            </div>
+
+            <!-- Mapa Interactivo de Nodos de Colombia -->
+            <div class="noc-map-panel">
+                <div class="noc-map-top">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-blue-500 animate-ping"></span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Topología de Nodos Troncales</span>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">Haz clic en un nodo para trazar ruta de luz</span>
+                </div>
+
+                <div class="noc-nodes-grid">
+                    <button class="noc-node-btn active" data-node="bogota" data-lat="4.2" data-hop="NAP Central">
+                        <div class="node-status-dot"></div>
+                        <div class="node-info">
+                            <div class="node-city">Bogotá D.C.</div>
+                            <div class="node-role">NAP Colombia (Hub Central)</div>
+                        </div>
+                        <div class="node-ping font-mono">4.2 ms</div>
+                    </button>
+                    <button class="noc-node-btn" data-node="medellin" data-lat="8.7" data-hop="Troncal Occidente">
+                        <div class="node-status-dot"></div>
+                        <div class="node-info">
+                            <div class="node-city">Medellín</div>
+                            <div class="node-role">Nodo Antioquia / Eje Cafetero</div>
+                        </div>
+                        <div class="node-ping font-mono">8.7 ms</div>
+                    </button>
+                    <button class="noc-node-btn" data-node="bucaramanga" data-lat="6.1" data-hop="Nodo Santanderes">
+                        <div class="node-status-dot"></div>
+                        <div class="node-info">
+                            <div class="node-city">Bucaramanga</div>
+                            <div class="node-role">Nodo Santanderes / Frontera</div>
+                        </div>
+                        <div class="node-ping font-mono">6.1 ms</div>
+                    </button>
+                    <button class="noc-node-btn" data-node="cali" data-lat="11.4" data-hop="Troncal Pacífico">
+                        <div class="node-status-dot"></div>
+                        <div class="node-info">
+                            <div class="node-city">Cali</div>
+                            <div class="node-role">Nodo Pacífico / Suramérica</div>
+                        </div>
+                        <div class="node-ping font-mono">11.4 ms</div>
+                    </button>
+                    <button class="noc-node-btn" data-node="barranquilla" data-lat="16.8" data-hop="Landing Submarino">
+                        <div class="node-status-dot"></div>
+                        <div class="node-info">
+                            <div class="node-city">Barranquilla</div>
+                            <div class="node-role">Estación Aterrizaje Cable Maya</div>
+                        </div>
+                        <div class="node-ping font-mono">16.8 ms</div>
+                    </button>
+                </div>
+
+                <div class="noc-route-display" id="noc-route-display">
+                    <span class="route-label">Traza de Ruta Óptica:</span>
+                    <span class="route-val font-mono text-emerald-400" id="noc-route-text">Cliente Local ➔ Gateway FTTH ➔ Troncal Bogotá NAP Central ➔ Enlace Internacional (4.2 ms)</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal de Búsqueda Predictiva Premium (Desenfoque de pantalla) -->
+    <div id="search-modal"
+        class="fixed inset-0 bg-slate-950/80 backdrop-blur-xl z-[3000] hidden flex flex-col items-center justify-start pt-28 px-4 transition-all duration-300 opacity-0"
+        role="dialog" aria-modal="true" aria-labelledby="search-modal-title" data-lenis-prevent>
+        <div
+            class="w-full max-w-2xl bg-slate-900/60 border border-white/10 rounded-[32px] shadow-2xl p-6 relative flex flex-col max-h-[75vh]" data-lenis-prevent>
+            <!-- Encabezado de Busqueda -->
+            <div class="flex items-center gap-3 border-b border-white/10 pb-4 mb-4">
+                <svg class="text-blue-500 w-5 h-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="search-modal-input"
+                    class="w-full bg-transparent text-white text-lg outline-none placeholder-slate-500 font-medium"
+                    placeholder="Buscar manuales, comandos CMD, redes..." autofocus>
+                <button id="close-search-modal"
+                    class="text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-xl"
+                    aria-label="Cerrar búsqueda">
+                    <kbd class="text-xs font-bold bg-white/10 px-2.5 py-1 rounded">ESC</kbd>
+                </button>
+            </div>
+
+            <!-- Contenedor de Resultados del Buscador -->
+            <div class="overflow-y-auto space-y-6 pr-1 flex-1" id="search-results-container" data-lenis-prevent>
+                <!-- Sugeridos -->
+                <div id="search-suggestions">
+                    <h4 class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-3"
+                        id="search-modal-title">Búsquedas Sugeridas</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button
+                            class="suggestion-item text-left p-3.5 rounded-2xl bg-white/5 hover:bg-blue-600/10 hover:text-blue-400 border border-white/5 hover:border-blue-500/30 transition-all text-xs font-semibold text-slate-300"
+                            data-target="diagnostico">CMD Diagnóstico</button>
+                        <button
+                            class="suggestion-item text-left p-3.5 rounded-2xl bg-white/5 hover:bg-indigo-600/10 hover:text-indigo-400 border border-white/5 hover:border-indigo-500/30 transition-all text-xs font-semibold text-slate-300"
+                            data-target="calc-subnet">Calculadora Subredes</button>
+                        <button
+                            class="suggestion-item text-left p-3.5 rounded-2xl bg-white/5 hover:bg-purple-600/10 hover:text-purple-400 border border-white/5 hover:border-purple-500/30 transition-all text-xs font-semibold text-slate-300"
+                            data-target="lan">Armado Cable T568A / T568B</button>
+                        <button
+                            class="suggestion-item text-left p-3.5 rounded-2xl bg-white/5 hover:bg-emerald-600/10 hover:text-emerald-400 border border-white/5 hover:border-emerald-500/30 transition-all text-xs font-semibold text-slate-300"
+                            data-target="qos">Priorización QoS</button>
+                    </div>
+                </div>
+
+                <!-- Resultados Dinámicos -->
+                <div id="dynamic-results" class="space-y-2 hidden">
+                    <!-- Se renderizarán en script.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Contenido de Manuales (Original) -->
+    <div class="modal fixed inset-0 bg-slate-950/80 backdrop-blur-md opacity-0 invisible transition-all duration-300 z-[2000] flex items-center justify-center p-4"
+        id="modal" role="dialog" aria-modal="true" data-lenis-prevent>
+        <div
+            class="modal-content bg-slate-900 border border-white/10 w-full max-w-4xl p-6 md:p-12 rounded-[32px] max-h-[85vh] overflow-y-auto relative shadow-2xl transition-transform duration-300 translate-y-10" data-lenis-prevent>
+            <button
+                class="close-modal absolute top-6 right-6 bg-white/5 border border-white/10 hover:bg-red-500 hover:text-white p-2.5 rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center text-slate-400"
+                id="btn-close-modal" aria-label="Cerrar modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div id="modal-body" class="modal-body text-slate-200">
+                <!-- Se inyecta la información del manual dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- LIQUID BAR / DOCK FLOATING AT BOTTOM -->
+    <div
+        class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[2000] flex items-center justify-center pointer-events-auto w-full max-w-2xl px-4">
+        <div id="liquid-dock"
+            class="flex items-center gap-2 bg-slate-900/60 border border-white/10 px-4 py-2.5 rounded-full backdrop-blur-xl shadow-2xl w-full relative justify-between md:justify-center md:gap-3">
+            <!-- Floating highlight backdrop -->
+            <div id="dock-highlight"
+                class="absolute h-9 bg-blue-500/20 border border-blue-500/30 rounded-full transition-all duration-300 pointer-events-none z-0">
+            </div>
+
+            <!-- Dock Item: Home -->
+            <button
+                class="dock-item relative z-10 p-2.5 rounded-full hover:scale-110 active:scale-95 transition-all text-slate-300 hover:text-white"
+                data-target="home" aria-label="Dashboard" title="Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            </button>
+
+            <!-- Dock Item: Buscar -->
+            <button id="dock-search-btn"
+                class="dock-item relative z-10 p-2.5 rounded-full hover:scale-110 active:scale-95 transition-all text-slate-300 hover:text-white"
+                aria-label="Buscar" title="Buscar">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </button>
+
+            <!-- Dock Item: Ping Visual -->
+            <button id="dock-ping-btn"
+                class="dock-item relative z-10 p-2.5 rounded-full hover:scale-110 active:scale-95 transition-all text-slate-300 hover:text-emerald-400"
+                aria-label="Ping Visual" title="Monitor Ping en vivo">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </button>
+
+            <!-- Dock Item: Modo Concentración -->
+            <button id="dock-focus-btn"
+                class="dock-item relative z-10 p-2.5 rounded-full hover:scale-110 active:scale-95 transition-all text-slate-300 hover:text-cyan-400"
+                aria-label="Modo Concentración" title="Modo Concentración">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 3v1m0 16v1M4.22 4.22l.7.7m12.16 12.16.7.7M3 12h1m16 0h1M4.92 19.08l.7-.7M18.36 5.64l.7-.7" />
+                    <circle cx="12" cy="12" r="4" />
+                </svg>
+            </button>
+
+            <!-- Dock Item: QR de Red -->
+            <button id="dock-qr-btn"
+                class="dock-item relative z-10 p-2.5 rounded-full hover:scale-110 active:scale-95 transition-all text-slate-300 hover:text-purple-400"
+                aria-label="QR de Red" title="Código QR de configuración">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <path d="M14 14h2v2h-2zM18 14h3v3h-3zM14 18h3v3h-3zM20 20h1v1h-1z" />
+                </svg>
+            </button>
+
+            <span class="w-px h-6 bg-white/10 relative z-10 hidden md:inline-block"></span>
+
+            <!-- Theme Controls inside the Liquid Bar -->
+            <div class="glass-radio-group relative z-10" role="radiogroup" aria-label="Seleccionar tema visual">
+                <input id="glass-dark" type="radio" name="theme" value="dark" checked>
+                <label class="theme-option" data-theme="dark" for="glass-dark">Oscuro</label>
+                <input id="glass-light" type="radio" name="theme" value="light">
+                <label class="theme-option" data-theme="light" for="glass-light">Claro</label>
+                <input id="glass-glass" type="radio" name="theme" value="glass">
+                <label class="theme-option" data-theme="glass" for="glass-glass">Glass</label>
+                <span class="glass-glider" aria-hidden="true"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP: Monitor de Ping Visual -->
+    <div id="ping-visual-popup" data-lenis-prevent>
+        <div class="ping-popup-title">Monitor de Red en Tiempo Real</div>
+        <div class="ping-bar-container">
+            <div class="ping-bar-row">
+                <span class="ping-bar-label">Latencia</span>
+                <div class="ping-bar-track">
+                    <div class="ping-bar-fill" id="ping-bar-latency" style="background: #10b981; width: 20%"></div>
+                </div>
+                <span class="ping-bar-value" id="ping-val-latency">-- ms</span>
+            </div>
+            <div class="ping-bar-row">
+                <span class="ping-bar-label">Jitter</span>
+                <div class="ping-bar-track">
+                    <div class="ping-bar-fill" id="ping-bar-jitter" style="background: #f59e0b; width: 10%"></div>
+                </div>
+                <span class="ping-bar-value" id="ping-val-jitter">-- ms</span>
+            </div>
+            <div class="ping-bar-row">
+                <span class="ping-bar-label">Banda</span>
+                <div class="ping-bar-track">
+                    <div class="ping-bar-fill" id="ping-bar-bw" style="background: #3b82f6; width: 85%"></div>
+                </div>
+                <span class="ping-bar-value" id="ping-val-bw">-- Mb</span>
+            </div>
+            <div class="ping-bar-row">
+                <span class="ping-bar-label">Pérdida</span>
+                <div class="ping-bar-track">
+                    <div class="ping-bar-fill" id="ping-bar-loss" style="background: #e11d48; width: 2%"></div>
+                </div>
+                <span class="ping-bar-value" id="ping-val-loss">--%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP: QR de configuración de red -->
+    <div id="qr-popup" data-lenis-prevent>
+        <div class="qr-title">Configuración de Red</div>
+        <div id="qr-canvas-container"></div>
+        <div id="qr-info">Generando datos de red...</div>
+    </div>
+
+    <!-- Pie de Página -->
+    <footer
+        class="w-full max-w-7xl mx-auto px-6 md:px-12 border-t border-white/10 py-10 flex flex-col items-center gap-6 z-10 relative">
+        <h3 class="font-extrabold text-lg text-white tracking-widest">NexGen Telecom</h3>
+        <p class="text-xs text-slate-500 text-center">© 2026 Santander, Colombia. Proyecto desarrollado bajo estándares
+            de formación SENA.</p>
+
+        <!-- Footer Social Links — Liquid Glass Expandible (Solo GitHub y SENA) -->
+        <div class="social-links-container mt-6" role="navigation" aria-label="Links de contacto del proyecto">
+            <!-- GitHub del desarrollador -->
+            <a href="https://github.com/ivanlyenda" target="_blank" rel="noopener noreferrer"
+                class="social-btn" aria-label="GitHub del desarrollador">
+                <span class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                </span>
+                <span class="social-text">GitHub</span>
+            </a>
+
+            <!-- Portal SENA -->
+            <a href="https://www.sena.edu.co" target="_blank" rel="noopener noreferrer"
+                class="social-btn" aria-label="Portal SENA" style="--fiber-color: rgba(22,163,74,0.7); --fiber-glow: rgba(22,163,74,0.4);">
+                <span class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                    </svg>
+                </span>
+                <span class="social-text">SENA · 3147350</span>
+            </a>
+        </div>
+
+        <!-- Credits section — Glass cards premium -->
+        <div class="footer-credits flex flex-wrap justify-center gap-6 mt-6 w-full">
+            <div
+                class="credit-item bg-slate-900/30 border border-white/5 px-6 py-4 rounded-2xl shadow-md text-center max-w-[250px] flex-1">
+                <b class="block text-[10px] uppercase text-blue-400 tracking-wider mb-1">Instructor de Formación</b>
+                <span class="text-xs text-slate-300">Diego Cordero</span>
+            </div>
+            <div
+                class="credit-item bg-slate-900/30 border border-white/5 px-6 py-4 rounded-2xl shadow-md text-center max-w-[250px] flex-1">
+                <b class="block text-[10px] uppercase text-cyan-400 tracking-wider mb-1">Mentor Académico</b>
+                <span class="text-xs text-slate-300">Vladimir Quintana</span>
+            </div>
+            <div
+                class="credit-item bg-slate-900/30 border border-white/5 px-6 py-4 rounded-2xl shadow-md text-center max-w-[250px] flex-1">
+                <b class="block text-[10px] uppercase text-indigo-400 tracking-wider mb-1">Número de Ficha SENA</b>
+                <span class="text-xs text-slate-300">3147350</span>
+            </div>
+            <div
+                class="credit-item bg-slate-900/30 border border-white/5 px-6 py-4 rounded-2xl shadow-md text-center max-w-[250px] flex-1">
+                <b class="block text-[10px] uppercase text-purple-400 tracking-wider mb-1">Desarrollador Principal</b>
+                <span class="text-xs text-slate-300">Iván Steven Parra Niño</span>
+            </div>
+        </div>
+
+        <!-- Protección Legal y Cumplimiento Normativo (Evita sanciones y multas Ley 1581 / SIC / CRC) -->
+        <div class="legal-compliance-bar text-center mt-6 pt-4 border-t border-white/5 text-[11px] text-slate-400 max-w-3xl leading-relaxed">
+            <p class="mb-2">
+                <strong class="text-slate-300">Aviso Legal y Exención de Responsabilidad Académica:</strong> 
+                "NexGen Telecom" es un proyecto estrictamente académico y pedagógico desarrollado bajo el programa de formación profesional del <strong>SENA (Ficha 3147350)</strong>. 
+                No constituye una empresa comercial de telecomunicaciones ni presta servicios tarifados de Internet (Exención Ley 1480 de 2011 / CRC / SIC).
+            </p>
+            <div class="flex justify-center gap-4 text-blue-400 text-xs font-semibold">
+                <button id="btn-legal-notice" class="hover:underline cursor-pointer">Política de Privacidad y Habeas Data (Ley 1581 de 2012)</button>
+                <span>•</span>
+                <button id="btn-terms-notice" class="hover:underline cursor-pointer">Términos Académicos de Uso</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script principal -->
+    <script src="js/ui/app-shell.js?v=20260706e" defer></script>
+    <script src="js/animations/neural-net.js?v=20261017a" defer></script>
+    <script src="js/ui/global-events.js?v=20260706e" defer></script>
+    <script src="js/ui/widgets.js?v=20260706e" defer></script>
+    <script src="js/animations/gsap-core.js?v=20260807b" defer></script>
+    <script src="js/ui/sidebar.js?v=20260706e" defer></script>
+    <script src="js/ui/modal-tools.js?v=20260807a" defer></script>
+    <script src="js/ui/dock-theme.js?v=20260807a" defer></script>
+    <script src="js/ui/search.js?v=20260706e" defer></script>
+    <script src="js/animations/glass-effects.js?v=20260723a" defer></script>
+    <script src="js/animations/router-3d.js?v=20260807c" defer></script>
+    <!-- Widgets Premium — debe cargarse DESPUÉS de dock-theme.js para hookearse en setTheme -->
+    <script src="js/ui/widgets-premium.js?v=20260723a" defer></script>
+    <script src="js/main.js?v=20260706e" defer></script>
+</body>
+
+</html>
+
+

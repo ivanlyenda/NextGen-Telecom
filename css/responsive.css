@@ -1,0 +1,1129 @@
+/* --- LIGHT/DARK THEME SPECIFICS FOR CORE CUSTOM LAYOUTS --- */
+body.dark-theme {
+    background-color: #0b1120;
+    color: #f8fafc;
+}
+
+body.dark-theme .bg-glow-1 {
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, transparent 70%);
+}
+
+body.dark-theme .bg-glow-2 {
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%);
+}
+
+body.dark-theme #network-canvas {
+    opacity: 0.70;
+}
+
+body.dark-theme .border-beam {
+    background: conic-gradient(transparent, var(--tertiary) 10%, transparent 30%);
+}
+
+body.dark-theme .card::after {
+    background: radial-gradient(circle closest-side, rgba(167, 139, 250, 0.15), transparent);
+}
+
+/* Responsive patches for hardware and popups (gestión unificada en 3d.css) */
+
+@media (max-width: 768px) {
+    body {
+        cursor: auto;
+    }
+
+    .cursor-dot,
+    .cursor-outline {
+        display: none;
+    }
+
+    .router-scene {
+        transform: scale(0.7);
+    }
+}
+
+@media (max-width: 480px) {
+    .router-scene {
+        transform: scale(0.55);
+    }
+}
+
+/* Extra performance modifier */
+.disable-hover {
+    pointer-events: none !important;
+}
+
+/* =====================================================
+   CONTENEDOR RECTANGULAR ESTÉTICO INTERNO — WIDGETS
+   Contiene Summary + Characteristics por separado
+   de la descripción general del widget
+   ===================================================== */
+.widget-description {
+    /* La descripción general va FUERA del recuadro */
+    font-family: var(--font-technical);
+    font-size: 0.925rem;
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--text-light);
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.01em;
+}
+
+.card-inner-box {
+    /* Contenedor técnico premium para Summary + Characteristics */
+    font-family: var(--font-technical);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0.025) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    padding: 24px 26px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+        0 6px 22px -6px rgba(0, 0, 0, 0.22);
+    will-change: border-color, background;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.card-inner-box .inner-summary {
+    /* Sección Superior: Summary of Key Functions */
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-inner-box .inner-summary-label {
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-inner-box .inner-summary-label::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--secondary);
+    box-shadow: 0 0 8px var(--secondary);
+    animation: label-dot-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes label-dot-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--secondary); }
+    50%      { opacity: .6; box-shadow: 0 0 12px var(--secondary); }
+}
+
+.card-inner-box .inner-characteristics {
+    /* Sección Inferior: Characteristics */
+    padding-top: 4px;
+}
+
+.card-inner-box .inner-characteristics-label {
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tertiary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-inner-box .inner-characteristics-label::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--tertiary);
+    box-shadow: 0 0 8px var(--tertiary);
+    animation: label-dot-pulse 2.5s ease-in-out infinite .5s;
+}
+
+.card-inner-box .inner-text {
+    font-size: 0.88rem;
+    line-height: 1.72;
+    color: var(--text-light);
+    font-weight: 400;
+    letter-spacing: 0.005em;
+}
+
+.card-inner-box .inner-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.card-inner-box .inner-list li {
+    font-size: 0.84rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.6;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
+    transition: background .3s ease, border-color .3s ease;
+}
+
+.card-inner-box .inner-list li:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(59, 130, 246, 0.12);
+}
+
+.card-inner-box .inner-list li::before {
+    content: '\2192';
+    color: var(--secondary);
+    font-weight: 800;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    flex-shrink: 0;
+    text-shadow: 0 0 6px var(--secondary);
+}
+
+/* Hover elevation */
+.card-inner-box:hover,
+.custom-content .card-inner-box {
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.035) 100%);
+    border-color: rgba(59, 130, 246, 0.18);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+        0 8px 28px -6px rgba(59, 130, 246, 0.12);
+}
+
+/* =====================================================
+   MODO CLARO   CONTRASTE Y LEGIBILIDAD MEJORADOS
+   ===================================================== */
+body.light-theme p {
+    color: #1e293b !important;
+    /* Alto contraste sobre blanco */
+}
+
+body.light-theme span.text-slate-400,
+body.light-theme .text-slate-400 {
+    color: #475569 !important;
+}
+
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4 {
+    color: #0f172a !important;
+}
+
+body.light-theme .nav-item {
+    color: #334155 !important;
+    font-weight: 500;
+}
+
+body.light-theme .nav-item:hover {
+    color: #0f172a !important;
+}
+
+body.light-theme .time-container div {
+    color: #1e293b !important;
+}
+
+body.light-theme .time-container #fecha {
+    color: #475569 !important;
+}
+
+body.light-theme .widget-description {
+    color: #334155 !important;
+}
+
+body.light-theme .card-inner-box {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.035) 0%, rgba(37, 99, 235, 0.02) 100%);
+    border: 1px solid rgba(15, 23, 42, 0.07);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.55),
+        0 6px 22px -6px rgba(15, 23, 42, 0.08);
+}
+
+body.light-theme .card-inner-box .inner-text,
+body.light-theme .card-inner-box .inner-list li {
+    color: #334155 !important;
+}
+
+body.light-theme .card-inner-box .inner-list li {
+    background: rgba(15, 23, 42, 0.02);
+}
+
+body.light-theme .card-inner-box .inner-list li:hover {
+    background: rgba(37, 99, 235, 0.04);
+    border-color: rgba(37, 99, 235, 0.12);
+}
+
+body.light-theme .card-inner-box:hover {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.05) 0%, rgba(37, 99, 235, 0.03) 100%);
+    border-color: rgba(29, 78, 216, 0.18);
+}
+
+body.light-theme code {
+    background: rgba(15, 23, 42, 0.05);
+    color: #be123c;
+}
+
+body.light-theme .stat-card .label {
+    color: #78716c !important;
+}
+
+/* =====================================================
+   MODO TRANSPARENTE — LEGIBILIDAD EXTREMA
+   ===================================================== */
+body.transparent-theme p {
+    color: #e2e8f0 !important;
+}
+
+body.transparent-theme h1,
+body.transparent-theme h2,
+body.transparent-theme h3 {
+    color: #ffffff !important;
+}
+
+body.transparent-theme .nav-item {
+    color: #cbd5e1 !important;
+}
+
+body.transparent-theme .nav-item:hover {
+    color: #ffffff !important;
+}
+
+body.transparent-theme .widget-description {
+    color: #cbd5e1 !important;
+}
+
+body.transparent-theme .card-inner-box {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* =====================================================
+   MODO NEÓN — COLORES VIBRANTES
+   ===================================================== */
+body.neon-theme p {
+    color: #a5f3fc !important;
+}
+
+body.neon-theme h1,
+body.neon-theme h2,
+body.neon-theme h3,
+body.neon-theme h4 {
+    color: #f0fdff !important;
+}
+
+body.neon-theme .nav-item {
+    color: #a5f3fc !important;
+}
+
+body.neon-theme .nav-item:hover {
+    color: #ffffff !important;
+}
+
+body.neon-theme .card-inner-box {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.06) 0%, rgba(168, 85, 247, 0.03) 100%);
+    border-color: rgba(6, 182, 212, 0.18);
+    box-shadow:
+        inset 0 1px 0 0 rgba(6, 182, 212, 0.08),
+        0 6px 22px -6px rgba(6, 182, 212, 0.18);
+}
+
+body.neon-theme .card-inner-box .inner-summary-label {
+    color: #22d3ee !important;
+}
+
+body.neon-theme .card-inner-box .inner-characteristics-label {
+    color: #c084fc !important;
+}
+
+body.neon-theme .card-inner-box .inner-list li::before {
+    color: #22d3ee !important;
+    text-shadow: 0 0 8px rgba(34, 211, 238, .5);
+}
+
+body.neon-theme .card-inner-box .inner-list li {
+    background: rgba(6, 182, 212, 0.03);
+}
+
+body.neon-theme .card-inner-box .inner-list li:hover {
+    background: rgba(6, 182, 212, 0.06);
+    border-color: rgba(6, 182, 212, 0.15);
+}
+
+body.neon-theme code {
+    color: #22d3ee;
+    background: rgba(6, 182, 212, 0.08);
+    border-color: rgba(6, 182, 212, 0.15);
+}
+
+/* =====================================================
+   MEDIA QUERIES — RESPONSIVE LAYOUT (PC / MÓVIL)
+   ===================================================== */
+
+/* --- Tablets y pantallas intermedias --- */
+@media (max-width: 1024px) {
+    .analytics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-inner-box {
+        padding: 14px 16px;
+    }
+}
+/* --- Móvil (< 768px): adaptación general e integración móvil completa --- */
+@media (max-width: 768px) {
+    :root {
+        --header-h: 70px;
+        --sidebar-w: 92vw;
+    }
+
+    header {
+        height: 70px !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    .sidebar {
+        top: var(--header-h) !important;
+        height: calc(100dvh - var(--header-h)) !important;
+        padding: 16px !important;
+        gap: 16px !important;
+    }
+
+    /* Rendimiento Glass: desactiva filtros continuos en GPU móvil */
+    .liquid-glass {
+        animation: none !important;
+    }
+
+    .analytics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 14px !important;
+    }
+
+    .stat-card .value {
+        font-size: 1.5rem !important;
+    }
+
+    .card-inner-box {
+        padding: 12px 14px;
+        border-radius: 10px;
+    }
+
+    .card-inner-box .inner-text,
+    .card-inner-box .inner-list li {
+        font-size: 0.8rem;
+    }
+
+    .widget-description {
+        font-size: 0.875rem;
+    }
+
+    /* Dock adaptado a móvil */
+    #liquid-dock {
+        gap: 2px !important;
+        padding: 8px 12px !important;
+    }
+
+    .dock-item {
+        padding: 8px !important;
+    }
+
+    .dock-item svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    /* Modal adaptado */
+    .modal-content {
+        padding: 20px !important;
+        border-radius: 20px !important;
+        max-height: 90vh !important;
+    }
+
+    .quick-actions {
+        gap: 8px !important;
+    }
+
+    .btn-action {
+        padding: 10px 16px !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Secuencia de imágenes */
+    #sequence-section {
+        height: 110vh !important;
+        margin-bottom: 3rem !important;
+    }
+
+    .sequence-frame {
+        max-width: 94vw !important;
+        border-radius: 20px !important;
+    }
+
+    .sequence-copy h2 {
+        font-size: 1.5rem !important;
+    }
+
+    /* Router Scroll Showcase: optimización fluida sin scroll infinito en pantalla táctil */
+    #router-scroll-section,
+    .router-scroll-showcase {
+        height: 240vh !important;
+    }
+
+    .router-scroll-sticky {
+        height: 100dvh !important;
+        padding: 12px 14px !important;
+        gap: 12px !important;
+    }
+
+    .router-scroll-stage {
+        height: 210px !important;
+        flex: 0 0 auto !important;
+    }
+
+    .router-scroll-text-container {
+        width: min(100%, 460px) !important;
+        padding: 12px 16px !important;
+        border-radius: 18px !important;
+        text-align: center !important;
+    }
+
+    .rscroll-phase-nav {
+        justify-content: center !important;
+        margin-inline: auto !important;
+        margin-bottom: 8px !important;
+        gap: 4px !important;
+    }
+
+    .phase-pill {
+        padding: 3px 8px !important;
+        font-size: 0.6rem !important;
+    }
+
+    .router-scroll-badge {
+        padding: 0.25rem 0.6rem !important;
+        font-size: 0.6rem !important;
+        margin-bottom: 0.4rem !important;
+    }
+
+    .router-scroll-title {
+        font-size: 1.15rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+
+    .router-scroll-desc {
+        font-size: 0.78rem !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.45 !important;
+    }
+
+    .router-scroll-features {
+        text-align: left !important;
+        gap: 4px !important;
+    }
+
+    .router-scroll-features li {
+        font-size: 0.72rem !important;
+        line-height: 1.35 !important;
+    }
+
+    .rscroll-macro-callout {
+        margin-top: 8px !important;
+        padding: 8px 10px !important;
+    }
+
+    /* NOC Telemetría */
+    .telemetry-card {
+        padding: 14px !important;
+        border-radius: 16px !important;
+    }
+
+    .telemetry-icon {
+        font-size: 1.3rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .telemetry-val {
+        font-size: 1.3rem !important;
+    }
+
+    .telemetry-lbl {
+        font-size: 0.72rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .telemetry-sub {
+        font-size: 0.62rem !important;
+    }
+
+    .noc-map-panel {
+        padding: 16px !important;
+        border-radius: 20px !important;
+    }
+}
+
+/* --- Móvil estándar (< 640px): Footer, Legal y Apilamiento Limpio --- */
+@media (max-width: 640px) {
+    .footer-credits {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    .footer-credits .credit-item {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 12px 16px !important;
+    }
+
+    .legal-compliance-bar {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        font-size: 10px !important;
+    }
+
+    .legal-compliance-bar .flex {
+        flex-direction: column !important;
+        gap: 6px !important;
+        align-items: center !important;
+    }
+
+    .legal-compliance-bar .flex span {
+        display: none !important;
+    }
+}
+
+/* --- Móvil pequeño (< 480px): máxima compactación sin desbordamientos --- */
+@media (max-width: 480px) {
+    :root {
+        --header-h: 64px;
+    }
+
+    header {
+        height: 64px !important;
+    }
+
+    .sidebar {
+        top: var(--header-h) !important;
+        height: calc(100dvh - var(--header-h)) !important;
+    }
+
+    .analytics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 10px !important;
+    }
+
+    .stat-card .value {
+        font-size: 1.25rem !important;
+    }
+
+    .stat-card .label {
+        font-size: 7.5px !important;
+        letter-spacing: 0.05em !important;
+        line-height: 1.25 !important;
+        white-space: normal !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
+    }
+
+    .stat-card .fiber-pulse {
+        margin-top: 4px !important;
+    }
+
+    .quick-actions {
+        gap: 8px !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .btn-action {
+        padding: 10px 14px !important;
+        font-size: 0.75rem !important;
+        flex: 1 1 calc(50% - 8px) !important;
+        justify-content: center !important;
+    }
+
+    h1 {
+        font-size: 2rem !important;
+    }
+
+    .card-inner-box {
+        padding: 10px 12px;
+    }
+
+    /* Dock hipercompacto para pantallas estrechas */
+    #liquid-dock {
+        gap: 2px !important;
+        padding: 5px 8px !important;
+        max-width: calc(100vw - 16px) !important;
+    }
+
+    .dock-item {
+        padding: 5px !important;
+    }
+
+    .dock-item svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .glass-radio-group label {
+        min-width: 38px !important;
+        padding: 0.35rem 0.45rem !important;
+        font-size: 7.5px !important;
+    }
+
+    .dock-label {
+        display: none !important;
+    }
+
+    /* Router interactivo 3D */
+    .router-container {
+        min-height: 290px !important;
+        padding: 0.5rem !important;
+    }
+
+    .router-controls {
+        gap: 0.4rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .router-controls .router-btn {
+        padding: 0.5rem 0.8rem !important;
+        font-size: 0.7rem !important;
+        min-height: 36px !important;
+    }
+
+    /* Router Scroll Showcase micro pantalla */
+    .router-scroll-stage {
+        height: 165px !important;
+    }
+
+    .router-scroll-text-container {
+        padding: 10px 12px !important;
+    }
+
+    .phase-pill {
+        padding: 2px 6px !important;
+        font-size: 0.54rem !important;
+    }
+
+    .callout-spec-line {
+        font-size: 0.62rem !important;
+    }
+
+    /* NOC Grid & Mapa en celular */
+    .noc-nodes-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+
+    .noc-node-btn {
+        padding: 10px 12px !important;
+    }
+
+    .noc-map-panel {
+        padding: 12px !important;
+    }
+
+    .noc-map-top {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+    }
+
+    .noc-route-display {
+        padding: 8px 10px !important;
+        font-size: 0.74rem !important;
+    }
+
+    .telemetry-card {
+        padding: 10px 12px !important;
+    }
+
+    .telemetry-val {
+        font-size: 1.15rem !important;
+    }
+
+    .focus-mode-banner {
+        top: 72px !important;
+        font-size: 0.62rem !important;
+        padding: 4px 12px !important;
+        max-width: 90vw !important;
+    }
+}
+
+/* --- Móvil ultra-compacto (< 360px): iPhone SE / Plegables cerrados --- */
+@media (max-width: 360px) {
+    .glass-radio-group label {
+        min-width: 32px !important;
+        padding: 0.3rem 0.25rem !important;
+        font-size: 7px !important;
+    }
+
+    .dock-item {
+        padding: 4px !important;
+    }
+
+    .stat-card .value {
+        font-size: 1.1rem !important;
+    }
+
+    .btn-action {
+        flex: 1 1 100% !important;
+    }
+}
+
+/* --- Accesibilidad: Reducción de movimiento --- */
+@media (prefers-reduced-motion: reduce) {
+    .liquid-glass {
+        animation: none !important;
+    }
+}
+
+/* =====================================================
+   PERFORMANCE: OPTIMIZACIONES ADICIONALES DE RENDER
+   ===================================================== */
+
+/* GPU Force controlado solo para capas modales/sidebar */
+.sidebar {
+    will-change: transform;
+}
+
+.modal,
+.modal-content {
+    will-change: opacity, transform;
+}
+
+#liquid-dock,
+.dock-item,
+.stat-card {
+    will-change: auto;
+}
+
+/* Prevent reflow durante animaciones de acordeón */
+.custom-content {
+    contain: layout;
+}
+/* =====================================================
+   TIPOGRAFÍA TÉCNICA PREMIUM — ACORDEONES Y MODALES
+   ===================================================== */
+.custom-content-inner {
+    font-family: var(--font-technical) !important;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    letter-spacing: 0.008em;
+}
+
+.custom-summary {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 0.975rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.01) 100%);
+    transition: background 0.3s, color 0.2s;
+}
+
+.custom-summary:hover {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.04), rgba(139, 92, 246, 0.02) 100%);
+    color: var(--secondary);
+}
+
+/* Código monospace más legible */
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+/* =====================================================
+   PING VISUAL WIDGET — Nuevo en dock
+   ===================================================== */
+#ping-visual-popup {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(11, 17, 32, 0.92);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: 20px;
+    padding: 16px 20px;
+    width: 260px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow:
+        0 20px 40px -8px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    z-index: 1999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+    font-family: var(--font-technical);
+}
+
+#ping-visual-popup.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+body.light-theme #ping-visual-popup {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(246, 242, 234, 0.90) 100%);
+    border-color: rgba(215, 206, 192, 0.80);
+    box-shadow: 0 16px 36px -8px rgba(160, 125, 80, 0.12), inset 0 1px 0 #ffffff;
+    color: #1c1917;
+}
+
+#ping-visual-popup .ping-popup-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#ping-visual-popup .ping-popup-title::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: pulsePwr 2s infinite;
+    flex-shrink: 0;
+}
+
+.ping-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.ping-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+}
+
+.ping-bar-label {
+    width: 70px;
+    color: var(--text-light);
+    font-size: 0.7rem;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.ping-bar-track {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.ping-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ping-bar-value {
+    width: 48px;
+    text-align: right;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* =====================================================
+   MODO CONCENTRACIÓN — Overlay de estudio
+   ===================================================== */
+#focus-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 7, 18, 0.6);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+body.focus-mode #focus-overlay {
+    opacity: 1;
+}
+
+body.focus-mode #network-canvas {
+    opacity: 0.05 !important;
+    transition: opacity 0.6s ease;
+}
+
+body.focus-mode main {
+    position: relative;
+    z-index: 20;
+}
+
+body.focus-mode header {
+    z-index: 1001;
+}
+
+body.focus-mode .focus-mode-banner {
+    display: flex !important;
+}
+
+.focus-mode-banner {
+    display: none;
+    position: fixed;
+    top: 88px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid rgba(6, 182, 212, 0.25);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-family: var(--font-technical);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #22d3ee;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 1002;
+    backdrop-filter: blur(12px);
+    gap: 8px;
+    align-items: center;
+    white-space: nowrap;
+    will-change: transform;
+}
+
+.focus-mode-banner::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #22d3ee;
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+    font-size: 0.8rem;
+}
+
+/* =====================================================
+   QR POPUP — Información de red
+   ===================================================== */
+#qr-popup {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(11, 17, 32, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 20px;
+    padding: 20px;
+    width: 240px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+    text-align: center;
+    font-family: var(--font-technical);
+}
+
+#qr-popup.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+body.light-theme #qr-popup {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(246, 242, 234, 0.92) 100%);
+    border-color: rgba(215, 206, 192, 0.80);
+    box-shadow: 0 16px 36px -8px rgba(160, 125, 80, 0.12), inset 0 1px 0 #ffffff;
+    color: #1c1917;
+}
+
+#qr-popup .qr-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin-bottom: 12px;
+}
+
+#qr-canvas-container {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 12px;
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    overflow: hidden;
+}
+
+#qr-canvas-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#qr-info {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    line-height: 1.5;
+    font-family: 'JetBrains Mono', Consolas, monospace;
+}
+
+/* =====================================================
+   SAFE AREA & DISPOSITIVOS MÓVILES (NOTCH / DYNAMIC ISLAND)
+   ===================================================== */
+@supports (padding: max(0px)) {
+    .fixed.bottom-6,
+    .dock-container {
+        bottom: max(1.5rem, calc(0.75rem + env(safe-area-inset-bottom, 0px))) !important;
+    }
+
+    header {
+        padding-top: max(0px, env(safe-area-inset-top, 0px));
+    }
+}
+
